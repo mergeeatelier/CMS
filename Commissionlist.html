@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบบันทึกรายการภาพวาดสั่งทำ</title>
+<style>
+  :root{
+    --brown:#6b4630; --brown-dark:#4a2f1e; --cream:#faf6f0; --card:#ffffff;
+    --border:#e3d9cc; --accent:#b5652f; --accent-dark:#914f22; --ok:#3a7a4e; --danger:#b23a3a;
+    --text:#3a2f27; --muted:#8a7a6c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Sarabun",Tahoma,sans-serif; background:var(--cream); color:var(--text); margin:0; padding:0;}
+  header{background:var(--brown-dark); color:#fff; padding:18px 24px;}
+  header h1{margin:0; font-size:20px;}
+  header p{margin:4px 0 0; font-size:13px; opacity:.8;}
+  .tabs{display:flex; background:var(--brown); }
+  .tab-btn{flex:0 0 auto; padding:12px 22px; background:none; border:none; color:#f0e6da; cursor:pointer; font-size:14px; opacity:.75;}
+  .tab-btn.active{opacity:1; background:var(--cream); color:var(--brown-dark); font-weight:600; border-radius:8px 8px 0 0;}
+  main{max-width:980px; margin:0 auto; padding:20px;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px 20px; margin-bottom:16px;}
+  .card h2{font-size:16px; margin:0 0 12px; color:var(--brown-dark); border-bottom:1px solid var(--border); padding-bottom:8px;}
+  .row{display:flex; flex-wrap:wrap; gap:14px;}
+  .field{flex:1 1 220px; display:flex; flex-direction:column; gap:4px; margin-bottom:10px;}
+  .field.small{flex:0 1 160px;}
+  label{font-size:12.5px; color:var(--muted); font-weight:600;}
+  input, select, textarea{padding:9px 10px; border:1px solid var(--border); border-radius:7px; font-size:14px; font-family:inherit; background:#fff; color:var(--text);}
+  input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent);}
+  input:disabled, select:disabled, textarea:disabled, input[readonly]{background:#eee7de; color:var(--muted); cursor:not-allowed;}
+  input:disabled::placeholder{font-style:italic;}
+  .field-hint{font-size:12px; color:var(--danger); margin-top:2px;}
+  .multi-row{display:flex; gap:6px; margin-bottom:6px; align-items:center;}
+  .multi-row input{flex:1;}
+  .color-row input[type="color"]{flex:0 0 40px; width:40px; height:36px; padding:2px; border-radius:6px; cursor:pointer;}
+  .color-row input[type="text"]{flex:1;}
+  input.invalid{border-color:var(--danger);}
+  .field-label-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;}
+  .field-label-row label{margin:0;}
+  textarea{resize:vertical; min-height:44px;}
+  .top-bar{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;}
+  .order-id-box{display:flex; align-items:center; gap:10px; font-size:14px;}
+  .order-id-box .id-val{font-weight:700; color:var(--accent-dark); font-size:16px; letter-spacing:.5px;}
+  button{cursor:pointer; border:none; border-radius:7px; padding:9px 16px; font-size:13.5px; font-weight:600; font-family:inherit; transition:opacity .15s;}
+  button:hover{opacity:.88;}
+  button:disabled{opacity:.45; cursor:not-allowed;}
+  .btn-primary{background:var(--accent); color:#fff;}
+  .btn-dark{background:var(--brown-dark); color:#fff;}
+  .btn-outline{background:#fff; color:var(--brown-dark); border:1px solid var(--border);}
+  .btn-danger{background:#fff; color:var(--danger); border:1px solid #e3b8b8;}
+  .btn-ghost{background:none; color:var(--accent-dark); padding:6px 10px;}
+  .btn-sm{padding:6px 11px; font-size:12.5px;}
+  .search-row{display:flex; gap:8px; margin-bottom:14px;}
+  .search-results{margin:8px 0 14px; border:1px solid var(--border); border-radius:7px; overflow:hidden; display:none;}
+  .search-results div{padding:8px 12px; font-size:13px; border-bottom:1px solid var(--border); cursor:pointer;}
+  .search-results div:last-child{border-bottom:none;}
+  .search-results div:hover{background:var(--cream);}
+  .item-card{border:1px solid var(--border); border-radius:9px; padding:14px; margin-bottom:12px; position:relative; background:#fffdfb;}
+  .item-card .item-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
+  .item-card .item-head b{color:var(--brown-dark); font-size:13.5px;}
+  .img-preview-wrap{display:flex; align-items:center; gap:10px;}
+  .img-preview{width:70px; height:70px; object-fit:cover; border-radius:7px; border:1px solid var(--border); display:none; background:#f4efe9;}
+  .status-msg{padding:10px 14px; border-radius:7px; font-size:13.5px; margin-bottom:14px; display:none;}
+  .status-msg.ok{background:#e7f5ea; color:var(--ok); display:block;}
+  .status-msg.err{background:#fbe9e9; color:var(--danger); display:block;}
+  .status-msg.loading{background:#f0ece5; color:var(--muted); display:block;}
+  .actions-after-save{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  th, td{padding:9px 8px; border-bottom:1px solid var(--border); text-align:left; vertical-align:middle;}
+  th{color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase;}
+  tr:hover td{background:#fbf8f4;}
+  .badge{padding:3px 9px; border-radius:20px; font-size:11.5px; font-weight:600;}
+  .badge.pending{background:#fdf1de; color:#a56a12;}
+  .badge.doing{background:#e2eefb; color:#2464a8;}
+  .badge.done{background:#e7f5ea; color:var(--ok);}
+  .badge.cancel{background:#f2e6e6; color:var(--danger);}
+  select.badge{border:none; cursor:pointer; -webkit-appearance:none; appearance:none; font-family:inherit;}
+  select.badge:disabled{cursor:wait; opacity:0.6;}
+  .list-toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}
+  .list-toolbar input, .list-toolbar select{padding:8px 10px;}
+  #listSearch{flex:1 1 220px;}
+  .muted{color:var(--muted); font-size:12.5px;}
+  .config-warning{background:#fff4e5; border:1px solid #f0c98a; color:#8a5a00; padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:16px;}
+
+  /* ---------- PDF Preview Modal ---------- */
+  .pdf-modal-overlay{position:fixed; inset:0; background:rgba(30,26,20,0.55); z-index:1000; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .pdf-modal-box{background:#fff; border-radius:10px; width:100%; max-width:900px; height:90vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,0.25);}
+  .pdf-modal-header{display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--border); font-weight:600; font-size:14px;}
+  .pdf-modal-header > div{display:flex; align-items:center; gap:14px;}
+  .pdf-modal-link{font-size:13px; color:var(--accent-dark); text-decoration:none; font-weight:500;}
+  .pdf-modal-link:hover{text-decoration:underline;}
+  .pdf-modal-close{background:none; border:none; font-size:26px; line-height:1; cursor:pointer; color:#888; padding:0 4px;}
+  .pdf-modal-close:hover{color:#333;}
+  .pdf-modal-body{flex:1; position:relative; background:#f4efe9;}
+  .pdf-modal-loading{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; color:#666; text-align:center; padding:20px;}
+  .pdf-modal-spinner{width:34px; height:34px; border:3px solid #ddd5c8; border-top-color:var(--accent-dark); border-radius:50%; animation:pdfSpin 0.8s linear infinite;}
+  @keyframes pdfSpin{ to { transform:rotate(360deg); } }
+  .pdf-modal-error{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--danger); text-align:center; padding:24px; font-size:14px;}
+  .pdf-modal-iframe{width:100%; height:100%; border:none;}
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 640px){
+    header{padding:14px 16px;}
+    header h1{font-size:17px;}
+    .tab-btn{flex:1 1 0; padding:11px 8px; font-size:12.5px; text-align:center;}
+    main{padding:12px;}
+    .card{padding:14px 15px;}
+    .row{gap:10px;}
+    .field, .field.small{flex:1 1 100%;}
+    .top-bar{flex-direction:column; align-items:stretch;}
+    .top-bar .order-id-box{flex-wrap:wrap;}
+    .top-bar button{width:100%;}
+    .search-row{flex-direction:column;}
+    .search-row button{width:100%;}
+    .img-preview-wrap{flex-wrap:wrap;}
+    .actions-after-save{flex-direction:column;}
+    .actions-after-save button{width:100%;}
+    .list-toolbar{flex-direction:column; align-items:stretch;}
+    #listSearch{flex:0 0 auto;}
+    .list-toolbar select, .list-toolbar button{width:100%;}
+    .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+    table{min-width:640px;}
+    .pdf-modal-overlay{padding:0;}
+    .pdf-modal-box{max-width:100%; height:100%; border-radius:0;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ระบบบันทึกรายการภาพวาดสั่งทำ</h1>
+  <p>CMS Custom Painting Order System</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="form">ฟอร์มบันทึกรายการ</button>
+  <button class="tab-btn" data-tab="list">รายการทั้งหมด / คิวงาน</button>
+</div>
+
+<main>
+  <div id="configWarning" class="config-warning" style="display:none;">
+    ยังไม่ได้ตั้งค่า API_URL — เปิดไฟล์นี้ด้วยโปรแกรมแก้ไขข้อความ แล้วแก้ค่า <code>API_URL</code> ที่ต้นไฟล์ script ให้เป็น Web App URL ที่ได้จากการ deploy Google Apps Script (ดูคู่มือติดตั้ง.md)
+  </div>
+
+  <div id="statusMsg" class="status-msg"></div>
+
+  <!-- ============ TAB: FORM ============ -->
+  <section id="panel-form" class="panel active">
+
+    <div class="card">
+      <div class="top-bar">
+        <div class="order-id-box">
+          Commission ID: <span class="id-val" id="orderIdDisplay">— ยังไม่สร้าง —</span>
+        </div>
+      </div>
+      <div class="search-row">
+        <input type="text" id="searchInput" placeholder="ใส่ CMS ID เพื่อแก้ไข (พิมพ์แล้วโหลดให้อัตโนมัติ)">
+      </div>
+      <div class="search-results" id="searchResults"></div>
+      <datalist id="projectIdList"></datalist>
+      <div class="row">
+        <div class="field">
+          <div class="field-label-row">
+            <label>Project ID</label>
+            <button type="button" class="btn-ghost btn-sm" id="btnEditProjectIds" style="display:none;">แก้ไข</button>
+          </div>
+          <div id="projectIdsContainer"></div>
+          <button type="button" class="btn-outline btn-sm" id="btnAddProjectId">+ เพิ่ม Project ID</button>
+        </div>
+        <div class="field">
+          <div class="field-label-row">
+            <label>Quotation No.</label>
+            <button type="button" class="btn-ghost btn-sm" id="btnEditQuotationNos" style="display:none;">แก้ไข</button>
+          </div>
+          <div id="quotationNosContainer"></div>
+          <button type="button" class="btn-outline btn-sm" id="btnAddQuotationNo">+ เพิ่มเลขที่ใบเสนอราคา</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>ข้อมูลลูกค้า</h2>
+      <div class="row">
+        <div class="field"><label>บริษัท/หน่วยงาน</label><input type="text" id="f_company"></div>
+        <div class="field"><label>ชื่อลูกค้า *</label><input type="text" id="f_customerName"></div>
+        <div class="field small"><label>เบอร์โทร *</label><input type="text" id="f_phone"></div>
+        <div class="field"><label>อีเมล</label><input type="email" id="f_email"></div>
+        <div class="field small"><label>ไลน์ไอดี</label><input type="text" id="f_lineId"></div>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:2 1 300px;"><label>ที่อยู่จัดส่ง</label><textarea id="f_address" rows="2"></textarea></div>
+        <div class="field small"><label>วันนัดรับ/ส่งงาน (Completion Date)</label><input type="date" id="f_appointmentDate"></div>
+        <div class="field">
+          <label>วิธีนัดรับ-ส่งงาน (Delivery Option)</label>
+          <input type="text" id="f_appointmentMethod" list="methodList" placeholder="เช่น มารับเองที่ร้าน">
+          <datalist id="methodList">
+            <option value="มารับเองที่ร้าน">
+            <option value="จัดส่งทางไปรษณีย์/ขนส่ง">
+            <option value="นัดส่งถึงบ้านลูกค้า">
+            <option value="เดลิเวอรี่ (Grab/Lalamove)">
+          </datalist>
+        </div>
+        <div class="field small">
+          <label>สถานะงาน</label>
+          <select id="f_status">
+            <option>รอดำเนินการ</option>
+            <option>กำลังทำ</option>
+            <option>เสร็จแล้ว</option>
+            <option>ยกเลิก</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field small"><label>Timeline (คำนวณอัตโนมัติ)</label><input type="text" id="f_timeline" readonly></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>รายการสั่งทำ</h2>
+      <div id="itemsContainer"></div>
+      <button class="btn-outline" id="btnAddItem" style="display:block; width:100%; text-align:center;">+ เพิ่มรายการ</button>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <button class="btn-primary" id="btnSave" style="display:block; width:100%; padding:11px 26px; font-size:14.5px; text-align:center;">บันทึกข้อมูล</button>
+      <div class="actions-after-save" id="afterSaveActions" style="display:none;">
+        <button class="btn-dark" id="btnPrint" style="flex:1; text-align:center;">พิมพ์ / ดูตัวอย่าง</button>
+        <button class="btn-outline" id="btnNewOrder" style="flex:1; text-align:center;">+ เริ่มรายการใหม่</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TAB: LIST ============ -->
+  <section id="panel-list" class="panel">
+    <div class="card">
+      <div class="list-toolbar">
+        <input type="text" id="listSearch" placeholder="ค้นหาชื่อลูกค้า / รหัสออเดอร์">
+        <select id="listStatusFilter">
+          <option value="">ทุกสถานะ</option>
+          <option>รอดำเนินการ</option>
+          <option>กำลังทำ</option>
+          <option>เสร็จแล้ว</option>
+          <option>ยกเลิก</option>
+        </select>
+        <button class="btn-outline btn-sm" id="btnRefreshList">รีเฟรช</button>
+        <button class="btn-dark btn-sm" id="btnPrintSelected">พิมพ์ที่เลือก</button>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="selectAll"></th>
+              <th></th>
+              <th>รหัสออเดอร์</th>
+              <th>ลูกค้า</th>
+              <th>วันนัดส่งงาน</th>
+              <th>สถานะ</th>
+              <th>จำนวนรายการ</th>
+              <th>อัปเดตล่าสุด</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="listTableBody"></tbody>
+        </table>
+      </div>
+      <p class="muted" id="listEmptyMsg" style="display:none;">ยังไม่มีข้อมูลออเดอร์</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ PDF PREVIEW MODAL ============ -->
+<div id="pdfModalOverlay" class="pdf-modal-overlay" style="display:none;">
+  <div class="pdf-modal-box">
+    <div class="pdf-modal-header">
+      <span id="pdfModalTitle">ตัวอย่าง PDF</span>
+      <div>
+        <a id="pdfModalOpenNewTab" href="#" target="_blank" rel="noopener" class="pdf-modal-link" style="display:none;">เปิดในแท็บใหม่ ↗</a>
+        <button id="pdfModalClose" class="pdf-modal-close" type="button" aria-label="ปิด">&times;</button>
+      </div>
+    </div>
+    <div class="pdf-modal-body">
+      <div id="pdfModalLoading" class="pdf-modal-loading">
+        <div class="pdf-modal-spinner"></div>
+        <p id="pdfModalLoadingText">กำลังสร้างไฟล์ PDF กรุณารอสักครู่... (อาจใช้เวลา 5-15 วินาที)</p>
+      </div>
+      <div id="pdfModalError" class="pdf-modal-error" style="display:none;"></div>
+      <iframe id="pdfModalFrame" class="pdf-modal-iframe" style="display:none;" title="ตัวอย่าง PDF"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ตั้งค่า: วาง Web App URL ของ Google Apps Script ตรงนี้
+   ========================================================= */
+const API_URL = "https://script.google.com/macros/s/AKfycbzdFsgtYH_NCnBkdj4bbSjfoiIz2ot8RTR439m54Lc31CKcxXPDgV79BsPtXbEjfOJI/exec";
+
+/* ========================= STATE ========================= */
+let currentOrder = { orderId: '', projectIds: [], quotationNos: [], items: [] };
+let allOrders = [];
+let allProjects = [];
+let projectIdsLocked = false;
+let quotationNosLocked = false;
+let searchDebounceTimer = null;
+
+/* ========================= INIT ========================= */
+document.addEventListener('DOMContentLoaded', () => {
+  if (!API_URL || API_URL.indexOf('PASTE_YOUR') === 0) {
+    document.getElementById('configWarning').style.display = 'block';
+  }
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
+  document.getElementById('btnAddItem').addEventListener('click', () => { addItem(); renderItems(); });
+  document.getElementById('btnSave').addEventListener('click', saveOrder);
+  document.getElementById('searchInput').addEventListener('input', () => {
+    clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(doSearch, 350);
+  });
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { clearTimeout(searchDebounceTimer); doSearch(); }
+  });
+  document.getElementById('btnPrint').addEventListener('click', previewPdf);
+  document.getElementById('btnNewOrder').addEventListener('click', startNewOrder);
+  document.getElementById('btnRefreshList').addEventListener('click', loadList);
+  document.getElementById('listSearch').addEventListener('input', renderListTable);
+  document.getElementById('listStatusFilter').addEventListener('change', renderListTable);
+  document.getElementById('selectAll').addEventListener('change', e => {
+    document.querySelectorAll('.row-check').forEach(cb => cb.checked = e.target.checked);
+  });
+  document.getElementById('btnPrintSelected').addEventListener('click', printSelectedPdf);
+  document.getElementById('pdfModalClose').addEventListener('click', closePdfModal_);
+  document.getElementById('pdfModalOverlay').addEventListener('click', e => {
+    if (e.target.id === 'pdfModalOverlay') closePdfModal_();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && document.getElementById('pdfModalOverlay').style.display !== 'none') closePdfModal_();
+  });
+  document.getElementById('btnAddProjectId').addEventListener('click', () => {
+    currentOrder.projectIds.push('');
+    renderProjectIds();
+  });
+  document.getElementById('btnAddQuotationNo').addEventListener('click', () => {
+    currentOrder.quotationNos.push('');
+    renderQuotationNos();
+  });
+  document.getElementById('f_appointmentDate').addEventListener('input', updateTimelineDisplay);
+  document.getElementById('btnEditProjectIds').addEventListener('click', () => {
+    projectIdsLocked = false;
+    renderProjectIds();
+  });
+  document.getElementById('btnEditQuotationNos').addEventListener('click', () => {
+    quotationNosLocked = false;
+    renderQuotationNos();
+  });
+
+  loadList();
+  loadProjects();
+  startNewOrder();
+});
+
+/* ========================= PROJECTS (dropdown/validate) ========================= */
+async function loadProjects() {
+  try {
+    const res = await apiGet('projects');
+    if (!res.success) return;
+    allProjects = res.projects || [];
+    const datalist = document.getElementById('projectIdList');
+    datalist.innerHTML = allProjects.map(p =>
+      `<option value="${escapeHtml(p.id)}">${p.name ? escapeHtml(p.name) : ''}</option>`
+    ).join('');
+  } catch (err) {
+    // เงียบไว้ ไม่ต้องรบกวนผู้ใช้ถ้าดึงลิสต์ Project ไม่ได้ ยังพิมพ์ Project ID เองได้ตามปกติ
+  }
+}
+
+function validateProjectIdInput(el) {
+  const val = el.value.trim();
+  if (!val || allProjects.length === 0) {
+    el.classList.remove('invalid');
+    return;
+  }
+  const found = allProjects.some(p => p.id === val);
+  el.classList.toggle('invalid', !found);
+}
+
+/* ========================= PROJECT ID / QUOTATION NO (หลายรายการ) ========================= */
+function renderProjectIds() {
+  const container = document.getElementById('projectIdsContainer');
+  const list = currentOrder.projectIds.length ? currentOrder.projectIds : [''];
+  if (!currentOrder.projectIds.length) currentOrder.projectIds = list;
+  container.innerHTML = list.map((val, idx) => `
+    <div class="multi-row">
+      <input type="text" class="pid-input" data-idx="${idx}" value="${escapeHtml(val)}"
+        placeholder="${projectIdsLocked ? '- ดึงข้อมูลอัตโนมัติ -' : 'รหัสอ้างอิงโปรเจกต์'}"
+        list="projectIdList" autocomplete="off" ${projectIdsLocked ? 'disabled' : ''}>
+      ${(!projectIdsLocked && list.length > 1) ? `<button type="button" class="btn-danger btn-sm" data-remove-pid="${idx}">ลบ</button>` : ''}
+    </div>
+  `).join('');
+
+  document.getElementById('btnAddProjectId').style.display = projectIdsLocked ? 'none' : 'inline-block';
+  document.getElementById('btnEditProjectIds').style.display = (projectIdsLocked && currentOrder.projectIds.some(Boolean)) ? 'inline-block' : 'none';
+
+  container.querySelectorAll('.pid-input').forEach(el => {
+    el.addEventListener('input', () => {
+      currentOrder.projectIds[Number(el.dataset.idx)] = el.value.trim();
+      validateProjectIdInput(el);
+    });
+    validateProjectIdInput(el);
+  });
+  container.querySelectorAll('[data-remove-pid]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentOrder.projectIds.splice(Number(btn.dataset.removePid), 1);
+      renderProjectIds();
+    });
+  });
+}
+
+function renderQuotationNos() {
+  const container = document.getElementById('quotationNosContainer');
+  const list = currentOrder.quotationNos.length ? currentOrder.quotationNos : [''];
+  if (!currentOrder.quotationNos.length) currentOrder.quotationNos = list;
+  container.innerHTML = list.map((val, idx) => `
+    <div class="multi-row">
+      <input type="text" class="qn-input" data-idx="${idx}" value="${escapeHtml(val)}"
+        placeholder="${quotationNosLocked ? '- ดึงข้อมูลอัตโนมัติ -' : 'เลขที่ใบเสนอราคา'}"
+        ${quotationNosLocked ? 'disabled' : ''}>
+      ${(!quotationNosLocked && list.length > 1) ? `<button type="button" class="btn-danger btn-sm" data-remove-qn="${idx}">ลบ</button>` : ''}
+    </div>
+  `).join('');
+
+  document.getElementById('btnAddQuotationNo').style.display = quotationNosLocked ? 'none' : 'inline-block';
+  document.getElementById('btnEditQuotationNos').style.display = (quotationNosLocked && currentOrder.quotationNos.some(Boolean)) ? 'inline-block' : 'none';
+
+  container.querySelectorAll('.qn-input').forEach(el => {
+    el.addEventListener('input', () => {
+      currentOrder.quotationNos[Number(el.dataset.idx)] = el.value.trim();
+    });
+  });
+  container.querySelectorAll('[data-remove-qn]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentOrder.quotationNos.splice(Number(btn.dataset.removeQn), 1);
+      renderQuotationNos();
+    });
+  });
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.getElementById('panel-form').classList.toggle('active', tab === 'form');
+  document.getElementById('panel-list').classList.toggle('active', tab === 'list');
+  if (tab === 'list') loadList();
+}
+
+function showStatus(msg, type) {
+  const el = document.getElementById('statusMsg');
+  el.textContent = msg;
+  el.className = 'status-msg ' + (type || '');
+  if (type === 'ok') setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+/* ========================= API HELPERS ========================= */
+async function apiGet(action, params) {
+  const qs = new URLSearchParams({ action, ...(params || {}) });
+  const res = await fetch(`${API_URL}?${qs.toString()}`, { method: 'GET' });
+  return res.json();
+}
+async function apiPost(payload) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // หลีกเลี่ยง CORS preflight
+    body: JSON.stringify(payload)
+  });
+  return res.json();
+}
+
+/* ========================= FORM: ORDER ========================= */
+function startNewOrder() {
+  // หมายเหตุ: ไม่ขอเลข Commission ID ล่วงหน้าอีกต่อไป เพื่อไม่ให้เลขกระโดด/ไม่ต่อเนื่อง
+  // ถ้ากดสร้างออเดอร์ใหม่ซ้ำๆ โดยไม่บันทึก — เลขจริงจะถูกออกตอนกด "บันทึกข้อมูล" เท่านั้น
+  currentOrder = { orderId: '', projectIds: [], quotationNos: [], company: '', customerName: '', phone: '', address: '', email: '', lineId: '',
+    appointmentDate: '', appointmentMethod: '', status: 'รอดำเนินการ', timeline: '', items: [] };
+  fillFormFromOrder(currentOrder);
+  projectIdsLocked = false;
+  quotationNosLocked = false;
+  renderProjectIds();
+  renderQuotationNos();
+  addItem();
+  renderItems();
+  document.getElementById('afterSaveActions').style.display = 'none';
+  document.getElementById('orderIdDisplay').textContent = 'กำลังดูเลขถัดไป...';
+  showNextIdPreview();
+}
+
+// แสดง "เลขที่คาดว่าจะได้" ให้ดูไว้ก่อนเฉยๆ (ไม่ขยับตัวนับ ไม่ล็อกอะไรทั้งนั้น)
+// เลขจริงจะออกตอนกดบันทึกเท่านั้น ถ้ามีคนอื่นบันทึกออเดอร์แทรกก่อน เลขจริงอาจขยับจากที่พรีวิวไว้ได้เล็กน้อย
+async function showNextIdPreview() {
+  const myOrder = currentOrder;
+  try {
+    const res = await apiGet('peekNextId');
+    if (currentOrder !== myOrder) return; // ผู้ใช้กดสร้างออเดอร์ใหม่/โหลดออเดอร์อื่นไปแล้วระหว่างรอ
+    if (res.success) {
+      document.getElementById('orderIdDisplay').textContent = res.orderId;
+    } else {
+      document.getElementById('orderIdDisplay').textContent = 'จะสร้างอัตโนมัติเมื่อบันทึก';
+    }
+  } catch (err) {
+    if (currentOrder !== myOrder) return;
+    document.getElementById('orderIdDisplay').textContent = 'จะสร้างอัตโนมัติเมื่อบันทึก';
+  }
+}
+
+function fillFormFromOrder(order) {
+  document.getElementById('f_company').value = order.company || '';
+  document.getElementById('f_customerName').value = order.customerName || '';
+  document.getElementById('f_phone').value = order.phone || '';
+  document.getElementById('f_email').value = order.email || '';
+  document.getElementById('f_lineId').value = order.lineId || '';
+  document.getElementById('f_address').value = order.address || '';
+  document.getElementById('f_appointmentDate').value = toDateInputValue_(order.appointmentDate);
+  document.getElementById('f_appointmentMethod').value = order.appointmentMethod || '';
+  document.getElementById('f_status').value = order.status || 'รอดำเนินการ';
+  document.getElementById('orderIdDisplay').textContent = order.orderId || '— ยังไม่สร้าง —';
+  updateTimelineDisplay();
+}
+
+function readFormIntoOrder() {
+  currentOrder.company = document.getElementById('f_company').value.trim();
+  currentOrder.customerName = document.getElementById('f_customerName').value.trim();
+  currentOrder.phone = document.getElementById('f_phone').value.trim();
+  currentOrder.email = document.getElementById('f_email').value.trim();
+  currentOrder.lineId = document.getElementById('f_lineId').value.trim();
+  currentOrder.address = document.getElementById('f_address').value.trim();
+  currentOrder.appointmentDate = document.getElementById('f_appointmentDate').value;
+  currentOrder.appointmentMethod = document.getElementById('f_appointmentMethod').value.trim();
+  currentOrder.status = document.getElementById('f_status').value;
+}
+
+// แปลง "YYYY-MM-DD" (ค่าจาก input type=date) เป็น Date แบบไม่ผูกกับ timezone (กันวันเพี้ยน)
+function parseDateOnly_(str) {
+  if (!str) return null;
+  const parts = String(str).split('-');
+  if (parts.length !== 3) return null;
+  return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+}
+
+// แปลงค่าวันที่ที่มาจาก backend ให้เป็น "YYYY-MM-DD" สำหรับใส่ใน input type=date
+// เผื่อกรณีค่าที่ได้มาไม่ใช่ข้อความ "YYYY-MM-DD" ตรงๆ (เช่น Sheets แปลงเป็น Date object แล้วถูกส่งมาเป็น ISO string)
+function toDateInputValue_(value) {
+  if (!value) return '';
+  const s = String(value);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s; // รูปแบบถูกต้องอยู่แล้ว ใช้ตรงๆ
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return '';
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+// แสดงวันที่แบบย่อ DD/MM/YYYY ใช้ในหน้าคิวงาน
+function formatDateShort_(value) {
+  const iso = toDateInputValue_(value);
+  if (!iso) return '-';
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+// Timeline = จำนวนวันนับจาก "วันที่บันทึกออเดอร์ (createdAt) + 1 วัน" ถึง "วันนัดรับ/ส่งงาน"
+// เช่น บันทึกวันที่ 1 นัดส่งวันที่ 20 → นับวันที่ 2 ถึงวันที่ 20 = 19 วัน (คำนวณเหมือนกับฝั่ง server ใน Code.gs)
+function computeTimelineDisplay(createdAtVal, appointmentDateStr) {
+  const appt = parseDateOnly_(appointmentDateStr);
+  if (!appt) return '';
+  const c = createdAtVal ? new Date(createdAtVal) : new Date();
+  const created = new Date(c.getFullYear(), c.getMonth(), c.getDate());
+  const diffDays = Math.round((appt - created) / 86400000);
+  if (isNaN(diffDays) || diffDays <= 0) return '-';
+  return diffDays + ' วัน';
+}
+
+function updateTimelineDisplay() {
+  const apptDate = document.getElementById('f_appointmentDate').value;
+  document.getElementById('f_timeline').value = computeTimelineDisplay(currentOrder.createdAt, apptDate);
+}
+
+/* ========================= ITEMS ========================= */
+function addItem() {
+  currentOrder.items.push({ description: '', size: '', material: '', color: '', colors: [], other: '', imageUrl: '', imageData: '' });
+}
+
+function isValidHex_(v) {
+  return /^#([0-9A-Fa-f]{6}|[0-9A-Fa-f]{3})$/.test(String(v || '').trim());
+}
+
+// แปลง item.color (ข้อความคั่นด้วยจุลภาคที่ส่งไป/มาจาก backend) ให้เป็น item.colors (array สำหรับ UI)
+function parseItemColors_(item) {
+  item.colors = String(item.color || '').split(',').map(s => s.trim()).filter(Boolean);
+}
+
+// อัปเดต item.color (ข้อความคั่นด้วยจุลภาค) จาก item.colors ทุกครั้งที่แก้ไขสี ก่อนส่งขึ้น backend
+function syncItemColorField_(idx) {
+  const item = currentOrder.items[idx];
+  item.color = (item.colors || []).filter(Boolean).join(', ');
+}
+
+function renderItems() {
+  const container = document.getElementById('itemsContainer');
+  container.innerHTML = '';
+  currentOrder.items.forEach((item, idx) => {
+    if (!item.colors) parseItemColors_(item);
+    const colorsRowsHtml = item.colors.map((hex, ci) => `
+      <div class="multi-row color-row">
+        <input type="color" data-color-swatch="${idx}:${ci}" value="${isValidHex_(hex) ? escapeHtml(hex) : '#000000'}">
+        <input type="text" data-color-hex="${idx}:${ci}" value="${escapeHtml(hex)}" placeholder="#FFFFFF">
+        <button type="button" class="btn-ghost btn-sm" data-remove-color="${idx}:${ci}">✕</button>
+      </div>
+    `).join('');
+
+    // item.imageData คือรูปที่เพิ่งเลือกใหม่ (data URL แสดงได้ตรงๆ) ส่วน item.imageUrl คือรูปเดิมที่เคยบันทึกไว้ใน Drive
+    // ใช้ลิงก์ thumbnail ของ Drive แทนลิงก์ uc?export=view เพราะฝัง <img> ตรงๆ แล้วบางทีโหลดไม่ขึ้น
+    const previewSrc = item.imageData || (item.imageUrl ? driveThumbnailUrl_(item.imageUrl, 200) : '');
+
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML = `
+      <div class="item-head">
+        <b>รายการที่ ${idx + 1}</b>
+        <button class="btn-danger btn-sm" data-remove="${idx}">ลบรายการนี้</button>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>รูปภาพแนบ</label>
+          <div class="img-preview-wrap">
+            <img class="img-preview" id="preview-${idx}" src="${escapeHtml(previewSrc)}" style="${previewSrc ? 'display:block;' : ''}" onerror="this.style.display='none';">
+            <input type="file" accept="image/*" data-imgidx="${idx}">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:2 1 260px;">
+          <label>คำอธิบายภาพ *</label>
+          <textarea data-field="description" data-idx="${idx}" rows="2" placeholder="เช่น ภาพวาดสีน้ำมันรูปครอบครัว 3 คน">${item.description}</textarea>
+        </div>
+        <div class="field small"><label>ขนาด</label><input type="text" data-field="size" data-idx="${idx}" value="${item.size}" placeholder="เช่น 40x60 ซม."></div>
+        <div class="field small"><label>วัสดุ</label><input type="text" data-field="material" data-idx="${idx}" value="${item.material}" placeholder="เช่น ผ้าใบ, กระดาษ"></div>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:2 1 300px;">
+          <label>สี (เลือกจากสวอทช์หรือพิมพ์โค้ดสี เพิ่มได้หลายสี)</label>
+          <div>${colorsRowsHtml}</div>
+          <button type="button" class="btn-outline btn-sm" data-add-color="${idx}">+ เพิ่มสี</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:2 1 260px;">
+          <label>หมายเหตุ/อื่นๆ</label>
+          <textarea data-field="other" data-idx="${idx}" rows="2">${item.other}</textarea>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  container.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!confirm('ยืนยันลบรายการภาพวาดนี้?')) return;
+      currentOrder.items.splice(Number(btn.dataset.remove), 1);
+      if (currentOrder.items.length === 0) addItem();
+      renderItems();
+    });
+  });
+  container.querySelectorAll('[data-field]').forEach(el => {
+    el.addEventListener('input', () => {
+      currentOrder.items[Number(el.dataset.idx)][el.dataset.field] = el.value;
+    });
+  });
+  container.querySelectorAll('[data-add-color]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = Number(btn.dataset.addColor);
+      currentOrder.items[idx].colors.push('#000000');
+      syncItemColorField_(idx);
+      renderItems();
+    });
+  });
+  container.querySelectorAll('[data-remove-color]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const [idx, ci] = btn.dataset.removeColor.split(':').map(Number);
+      currentOrder.items[idx].colors.splice(ci, 1);
+      syncItemColorField_(idx);
+      renderItems();
+    });
+  });
+  container.querySelectorAll('[data-color-swatch]').forEach(el => {
+    el.addEventListener('input', () => {
+      const [idx, ci] = el.dataset.colorSwatch.split(':').map(Number);
+      currentOrder.items[idx].colors[ci] = el.value;
+      syncItemColorField_(idx);
+      const hexInput = container.querySelector(`[data-color-hex="${idx}:${ci}"]`);
+      if (hexInput) hexInput.value = el.value;
+    });
+  });
+  container.querySelectorAll('[data-color-hex]').forEach(el => {
+    el.addEventListener('input', () => {
+      const [idx, ci] = el.dataset.colorHex.split(':').map(Number);
+      currentOrder.items[idx].colors[ci] = el.value;
+      syncItemColorField_(idx);
+      if (isValidHex_(el.value)) {
+        const swatchInput = container.querySelector(`[data-color-swatch="${idx}:${ci}"]`);
+        if (swatchInput) swatchInput.value = el.value;
+      }
+    });
+  });
+  container.querySelectorAll('[data-imgidx]').forEach(el => {
+    el.addEventListener('change', async (e) => {
+      const idx = Number(el.dataset.imgidx);
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const dataUrl = await fileToCompressedDataUrl(file);
+        currentOrder.items[idx].imageData = dataUrl;
+        const preview = document.getElementById('preview-' + idx);
+        preview.src = dataUrl;
+        preview.style.display = 'block';
+      } catch (err) {
+        showStatus('ไม่สามารถอ่านไฟล์รูปภาพได้: ' + err, 'err');
+      }
+    });
+  });
+}
+
+function fileToCompressedDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        const maxDim = 1200;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+          else { w = Math.round(w * maxDim / h); h = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.75));
+      };
+      img.onerror = reject;
+      img.src = ev.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ========================= SAVE ========================= */
+async function saveOrder() {
+  readFormIntoOrder();
+  if (!currentOrder.customerName || !currentOrder.phone) {
+    showStatus('กรุณากรอกชื่อลูกค้าและเบอร์โทรอย่างน้อย', 'err');
+    return;
+  }
+  if (currentOrder.items.length === 0 || !currentOrder.items.some(it => it.description)) {
+    showStatus('กรุณาเพิ่มรายการภาพวาดอย่างน้อย 1 รายการ พร้อมคำอธิบาย', 'err');
+    return;
+  }
+  showStatus('กำลังบันทึกข้อมูล...', 'loading');
+  const btnSave = document.getElementById('btnSave');
+  btnSave.disabled = true;
+  btnSave.textContent = 'กำลังบันทึก...';
+  // ซ่อนปุ่ม PDF ไว้ก่อนจนกว่าจะสร้าง PDF ของรอบนี้เสร็จเรียบร้อย (แม้ตอนโหลดออเดอร์เก่ามาแก้จะเคยมีปุ่มโชว์อยู่ก็ตาม)
+  document.getElementById('afterSaveActions').style.display = 'none';
+  const payload = Object.assign({}, currentOrder, {
+    projectId: currentOrder.projectIds.filter(Boolean).join(', '),
+    quotationNo: currentOrder.quotationNos.filter(Boolean).join(', ')
+  });
+  try {
+    const res = await apiPost({ action: 'save', order: payload });
+    if (res.success) {
+      currentOrder = res.order;
+      currentOrder.projectIds = (currentOrder.projectId || '').split(',').map(s => s.trim()).filter(Boolean);
+      currentOrder.quotationNos = (currentOrder.quotationNo || '').split(',').map(s => s.trim()).filter(Boolean);
+      projectIdsLocked = currentOrder.projectIds.length > 0;
+      quotationNosLocked = currentOrder.quotationNos.length > 0;
+      // เก็บ imageData ที่เพิ่งอัปโหลดสำเร็จไว้เป็น imageUrl แล้ว ไม่ต้องส่งซ้ำ
+      currentOrder.items.forEach(it => { it.imageData = ''; parseItemColors_(it); });
+      fillFormFromOrder(currentOrder);
+      renderProjectIds();
+      renderQuotationNos();
+      renderItems();
+      loadList();
+
+      // สร้าง PDF ให้อัตโนมัติทันทีหลังบันทึกสำเร็จ (ไม่ต้องกดปุ่มแยก) — ปุ่มดาวน์โหลด/พิมพ์จะโผล่มาก็ต่อเมื่อสร้างเสร็จจริงเท่านั้น
+      btnSave.textContent = 'กำลังสร้าง PDF...';
+      showStatus(`บันทึกสำเร็จ รหัสออเดอร์ ${currentOrder.orderId} — กำลังสร้าง PDF...`, 'loading');
+      try {
+        const pdfRes = await apiPost({ action: 'generatePdf', orderId: currentOrder.orderId });
+        console.log('[generatePdf response]', pdfRes);
+        if (pdfRes.success) {
+          currentOrder.pdfUrl = pdfRes.pdfUrl;
+          document.getElementById('afterSaveActions').style.display = 'flex';
+          showStatus(`บันทึกสำเร็จ รหัสออเดอร์ ${currentOrder.orderId} — สร้าง PDF เรียบร้อย`, 'ok');
+        } else {
+          const msg = `สร้าง PDF ไม่สำเร็จ: ${pdfRes.error}`;
+          showStatus(`บันทึกสำเร็จ รหัสออเดอร์ ${currentOrder.orderId} แต่${msg} (กดบันทึกซ้ำเพื่อลองสร้าง PDF ใหม่ได้)`, 'err');
+          alert(msg); // ชั่วคราวเพื่อ debug — เห็นข้อความ error ชัดเจนแน่นอน
+        }
+      } catch (pdfErr) {
+        console.error('[generatePdf error]', pdfErr);
+        const msg = `สร้าง PDF ไม่สำเร็จ (เชื่อมต่อ/ทำงานผิดพลาด): ${pdfErr}`;
+        showStatus(`บันทึกสำเร็จ รหัสออเดอร์ ${currentOrder.orderId} แต่${msg} (กดบันทึกซ้ำเพื่อลองสร้าง PDF ใหม่ได้)`, 'err');
+        alert(msg); // ชั่วคราวเพื่อ debug — เห็นข้อความ error ชัดเจนแน่นอน
+      }
+    } else {
+      showStatus('บันทึกไม่สำเร็จ: ' + res.error, 'err');
+    }
+  } catch (err) {
+    showStatus('เชื่อมต่อ Google Sheet ไม่ได้: ' + err, 'err');
+  } finally {
+    btnSave.disabled = false;
+    btnSave.textContent = 'บันทึกข้อมูล';
+  }
+}
+
+/* ========================= SEARCH / EDIT ========================= */
+// ค้นหาแบบพิมพ์แล้วขึ้นทันที ใช้ข้อมูลที่แคชไว้จาก loadList() — ถ้าตรง CMS ID เป๊ะๆ จะโหลดเข้าฟอร์มทันทีโดยไม่ต้องเลือกจากลิสต์
+function doSearch() {
+  const raw = document.getElementById('searchInput').value.trim();
+  const resultsBox = document.getElementById('searchResults');
+  if (!raw) { resultsBox.style.display = 'none'; return; }
+  const q = raw.toLowerCase();
+
+  const exact = allOrders.find(o => String(o.orderId).toLowerCase() === q);
+  if (exact) {
+    resultsBox.style.display = 'none';
+    loadOrderIntoForm(exact);
+    return;
+  }
+
+  const matches = allOrders.filter(o =>
+    String(o.orderId).toLowerCase().includes(q) ||
+    String(o.customerName).toLowerCase().includes(q)
+  ).slice(0, 15);
+  resultsBox.innerHTML = '';
+  if (matches.length === 0) {
+    resultsBox.innerHTML = '<div>ไม่พบรายการที่ตรงกับ "' + escapeHtml(raw) + '"</div>';
+  } else {
+    matches.forEach(o => {
+      const d = document.createElement('div');
+      d.textContent = `${o.orderId} — ${o.customerName} (${o.status})`;
+      d.addEventListener('click', () => loadOrderIntoForm(o));
+      resultsBox.appendChild(d);
+    });
+  }
+  resultsBox.style.display = 'block';
+}
+
+function loadOrderIntoForm(order) {
+  currentOrder = JSON.parse(JSON.stringify(order));
+  currentOrder.items.forEach(it => { it.imageData = ''; parseItemColors_(it); });
+  if (currentOrder.items.length === 0) addItem();
+  currentOrder.projectIds = String(currentOrder.projectId || '').split(',').map(s => s.trim()).filter(Boolean);
+  currentOrder.quotationNos = String(currentOrder.quotationNo || '').split(',').map(s => s.trim()).filter(Boolean);
+  // ล็อกเฉพาะตอนมีข้อมูลอยู่แล้ว (กันแก้พลาด) — ถ้ายังว่างอยู่ให้กรอกเพิ่มได้เลยโดยไม่ต้องกดแก้ไขก่อน
+  projectIdsLocked = currentOrder.projectIds.length > 0;
+  quotationNosLocked = currentOrder.quotationNos.length > 0;
+  fillFormFromOrder(currentOrder);
+  renderProjectIds();
+  renderQuotationNos();
+  renderItems();
+  document.getElementById('searchResults').style.display = 'none';
+  document.getElementById('searchInput').value = '';
+  // โชว์ปุ่ม PDF เฉพาะออเดอร์ที่เคยสร้าง PDF สำเร็จไว้แล้วเท่านั้น ถ้ายังไม่มีให้กดบันทึกเพื่อสร้างใหม่ก่อน
+  document.getElementById('afterSaveActions').style.display = currentOrder.pdfUrl ? 'flex' : 'none';
+  switchTab('form');
+  showStatus(`โหลดออเดอร์ ${order.orderId} เพื่อแก้ไข`, 'ok');
+}
+
+/* ========================= LIST TAB ========================= */
+async function loadList() {
+  const tbody = document.getElementById('listTableBody');
+  try {
+    const res = await apiGet('list');
+    if (!res.success) { showStatus('โหลดรายการไม่สำเร็จ: ' + res.error, 'err'); return; }
+    allOrders = res.orders;
+    renderListTable();
+  } catch (err) {
+    document.getElementById('listEmptyMsg').style.display = 'block';
+    document.getElementById('listEmptyMsg').textContent = 'เชื่อมต่อ Google Sheet ไม่ได้: ' + err;
+  }
+}
+
+function statusBadgeClass(status) {
+  if (status === 'เสร็จแล้ว') return 'done';
+  if (status === 'กำลังทำ') return 'doing';
+  if (status === 'ยกเลิก') return 'cancel';
+  return 'pending';
+}
+
+function renderListTable() {
+  const q = document.getElementById('listSearch').value.trim().toLowerCase();
+  const statusFilter = document.getElementById('listStatusFilter').value;
+  const tbody = document.getElementById('listTableBody');
+  tbody.innerHTML = '';
+
+  const filtered = allOrders.filter(o => {
+    const matchesQ = !q || String(o.orderId).toLowerCase().includes(q) || String(o.customerName).toLowerCase().includes(q);
+    const matchesStatus = !statusFilter || o.status === statusFilter;
+    return matchesQ && matchesStatus;
+  });
+
+  document.getElementById('listEmptyMsg').style.display = filtered.length === 0 ? 'block' : 'none';
+  document.getElementById('listEmptyMsg').textContent = 'ไม่พบข้อมูลออเดอร์';
+
+  const statusOptions = ['รอดำเนินการ', 'กำลังทำ', 'เสร็จแล้ว', 'ยกเลิก'];
+
+  filtered.forEach(o => {
+    const tr = document.createElement('tr');
+    const updated = o.updatedAt ? new Date(o.updatedAt).toLocaleString('th-TH') : '-';
+    const optionsHtml = statusOptions.map(s =>
+      `<option value="${escapeHtml(s)}" ${s === o.status ? 'selected' : ''}>${escapeHtml(s)}</option>`
+    ).join('');
+    const thumbUrl = (o.items && o.items[0] && o.items[0].imageUrl) ? driveThumbnailUrl_(o.items[0].imageUrl, 100) : '';
+    const thumbHtml = thumbUrl
+      ? `<img src="${escapeHtml(thumbUrl)}" style="width:36px; height:36px; object-fit:cover; border-radius:6px; display:block;" onerror="this.outerHTML='<div style=&quot;width:36px;height:36px;border-radius:6px;background:#eee7de;&quot;></div>'">`
+      : `<div style="width:36px; height:36px; border-radius:6px; background:#eee7de;"></div>`;
+    tr.innerHTML = `
+      <td><input type="checkbox" class="row-check" data-id="${o.orderId}"></td>
+      <td>${thumbHtml}</td>
+      <td>${o.orderId}</td>
+      <td>${o.customerName}</td>
+      <td>${formatDateShort_(o.appointmentDate)}</td>
+      <td><select class="badge ${statusBadgeClass(o.status)}" data-status-id="${o.orderId}">${optionsHtml}</select></td>
+      <td>${o.items.length}</td>
+      <td>${updated}</td>
+      <td>
+        <button class="btn-ghost btn-sm" data-edit="${o.orderId}">แก้ไข</button>
+        <button class="btn-ghost btn-sm" data-del="${o.orderId}" style="color:#b23a3a;">ลบ</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  tbody.querySelectorAll('[data-edit]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const order = allOrders.find(o => o.orderId === btn.dataset.edit);
+      if (order) loadOrderIntoForm(order);
+    });
+  });
+  tbody.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if (!confirm(`ยืนยันลบออเดอร์ ${btn.dataset.del}? การลบไม่สามารถย้อนกลับได้`)) return;
+      showStatus('กำลังลบ...', 'loading');
+      const res = await apiPost({ action: 'delete', orderId: btn.dataset.del });
+      if (res.success) { showStatus('ลบสำเร็จ', 'ok'); loadList(); }
+      else showStatus('ลบไม่สำเร็จ: ' + res.error, 'err');
+    });
+  });
+  tbody.querySelectorAll('[data-status-id]').forEach(sel => {
+    sel.addEventListener('change', async () => {
+      const orderId = sel.dataset.statusId;
+      const newStatus = sel.value;
+      const order = allOrders.find(o => o.orderId === orderId);
+      const prevStatus = order ? order.status : null;
+
+      // อัปเดตหน้าจอ + สถานะในเครื่องทันที (optimistic) ไม่ต้องรอ server ตอบกลับก่อนถึงจะเปลี่ยนสี/ค่า
+      sel.className = 'badge ' + statusBadgeClass(newStatus);
+      if (order) order.status = newStatus;
+      if (currentOrder && currentOrder.orderId === orderId) {
+        currentOrder.status = newStatus;
+        document.getElementById('f_status').value = newStatus;
+      }
+
+      try {
+        const res = await apiPost({ action: 'updateStatus', orderId: orderId, status: newStatus });
+        if (!res.success) throw new Error(res.error);
+      } catch (err) {
+        // ถ้าบันทึกจริงไม่สำเร็จ ค่อยย้อนกลับค่าเดิม
+        sel.value = prevStatus;
+        sel.className = 'badge ' + statusBadgeClass(prevStatus);
+        if (order) order.status = prevStatus;
+        showStatus('เปลี่ยนสถานะไม่สำเร็จ (ย้อนกลับค่าเดิมแล้ว): ' + err, 'err');
+      }
+    });
+  });
+}
+
+/* ========================= PDF (สร้างฝั่งเซิร์ฟเวอร์ บันทึกลง Google Drive) ========================= */
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ดึง Drive file id จากลิงก์ที่เก็บไว้ (รูปแบบ uc?export=view&id=... หรือ /d/.../view)
+function extractDriveFileId_(url) {
+  if (!url) return null;
+  const m = String(url).match(/[?&]id=([a-zA-Z0-9_-]+)/) || String(url).match(/\/d\/([a-zA-Z0-9_-]+)/);
+  return m ? m[1] : null;
+}
+
+// ใช้ endpoint thumbnail ของ Drive โดยเฉพาะ (เชื่อถือได้กว่า uc?export=view เวลาฝัง <img> ตรงๆ ในหน้าเว็บ)
+function driveThumbnailUrl_(url, size) {
+  const id = extractDriveFileId_(url);
+  if (!id) return '';
+  return `https://drive.google.com/thumbnail?id=${id}&sz=w${size || 100}`;
+}
+
+// แปลงลิงก์ Drive แบบ "view" ให้เป็นแบบ "preview" ซึ่งฝังใน iframe ได้ (Drive ออกแบบ endpoint นี้มาสำหรับ embed โดยเฉพาะ)
+function drivePreviewUrl_(url) {
+  const id = extractDriveFileId_(url);
+  if (!id) return url;
+  return `https://drive.google.com/file/d/${id}/preview`;
+}
+
+/* ---------- PDF Preview Modal ---------- */
+function openPdfModal_(title, loadingText) {
+  document.getElementById('pdfModalTitle').textContent = title || 'ตัวอย่าง PDF';
+  document.getElementById('pdfModalLoadingText').textContent = loadingText || 'กำลังสร้างไฟล์ PDF กรุณารอสักครู่... (อาจใช้เวลา 5-15 วินาที)';
+  document.getElementById('pdfModalLoading').style.display = 'flex';
+  document.getElementById('pdfModalError').style.display = 'none';
+  document.getElementById('pdfModalError').textContent = '';
+  const frame = document.getElementById('pdfModalFrame');
+  frame.style.display = 'none';
+  frame.src = '';
+  document.getElementById('pdfModalOpenNewTab').style.display = 'none';
+  document.getElementById('pdfModalOverlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function showPdfInModal_(viewUrl) {
+  document.getElementById('pdfModalLoading').style.display = 'none';
+  const frame = document.getElementById('pdfModalFrame');
+  frame.src = drivePreviewUrl_(viewUrl);
+  frame.style.display = 'block';
+  const newTabLink = document.getElementById('pdfModalOpenNewTab');
+  newTabLink.href = viewUrl;
+  newTabLink.style.display = 'inline';
+}
+
+function showPdfModalError_(message) {
+  document.getElementById('pdfModalLoading').style.display = 'none';
+  const errBox = document.getElementById('pdfModalError');
+  errBox.textContent = message;
+  errBox.style.display = 'flex';
+}
+
+function closePdfModal_() {
+  document.getElementById('pdfModalOverlay').style.display = 'none';
+  document.getElementById('pdfModalFrame').src = ''; // หยุดโหลด/เล่นเนื้อหาข้างในเมื่อปิด
+  document.body.style.overflow = '';
+}
+
+// สร้าง PDF ใหม่จริงๆ จาก template (เรียก generatePdf เสมอ) — ใช้ตอนยังไม่เคยมี PDF เท่านั้น
+async function regeneratePdf_() {
+  if (!currentOrder || !currentOrder.orderId) {
+    showStatus('กรุณาบันทึกออเดอร์ก่อนดูตัวอย่าง', 'err');
+    return;
+  }
+  openPdfModal_(`ตัวอย่าง PDF — ${currentOrder.orderId}`);
+  try {
+    const res = await apiPost({ action: 'generatePdf', orderId: currentOrder.orderId });
+    console.log('[generatePdf response]', res);
+    if (res.success) {
+      currentOrder.pdfUrl = res.pdfUrl;
+      showPdfInModal_(res.pdfUrl);
+      showStatus('สร้าง PDF สำเร็จ', 'ok');
+    } else {
+      showPdfModalError_('สร้าง PDF ไม่สำเร็จ: ' + res.error);
+      showStatus('สร้าง PDF ไม่สำเร็จ: ' + res.error, 'err');
+    }
+  } catch (err) {
+    console.error('[generatePdf error]', err);
+    showPdfModalError_('สร้าง PDF ไม่สำเร็จ: ' + err);
+    showStatus('สร้าง PDF ไม่สำเร็จ: ' + err, 'err');
+  }
+}
+
+// กด "พิมพ์ / ดูตัวอย่าง" — ถ้ามี PDF ที่สร้างไว้แล้ว (จากตอนบันทึกล่าสุด) เปิดดูเลยไม่ต้องเสียเวลาสร้างใหม่
+// สร้างใหม่เฉพาะตอนยังไม่เคยมี PDF เท่านั้น
+async function previewPdf() {
+  if (!currentOrder || !currentOrder.orderId) {
+    showStatus('กรุณาบันทึกออเดอร์ก่อนดูตัวอย่าง', 'err');
+    return;
+  }
+  if (currentOrder.pdfUrl) {
+    openPdfModal_(`ตัวอย่าง PDF — ${currentOrder.orderId}`);
+    showPdfInModal_(currentOrder.pdfUrl);
+    showStatus('เปิด PDF ที่มีอยู่แล้ว', 'ok');
+    return;
+  }
+  await regeneratePdf_();
+}
+
+async function printSelectedPdf() {
+  const ids = Array.from(document.querySelectorAll('.row-check:checked')).map(cb => cb.dataset.id);
+  if (ids.length === 0) { showStatus('กรุณาเลือกอย่างน้อย 1 รายการก่อนพิมพ์', 'err'); return; }
+  // PDF รวมหลายออเดอร์สร้างใหม่ทุกครั้งเสมอ (ไม่มีลิงก์เดิมให้ใช้ซ้ำ เพราะไฟล์รวมนี้ไม่ได้เก็บถาวร)
+  openPdfModal_(`PDF รวม ${ids.length} รายการ`, `กำลังสร้าง PDF รวม ${ids.length} รายการ... (อาจใช้เวลาสักครู่)`);
+  try {
+    const res = await apiPost({ action: 'generateBatchPdf', orderIds: ids });
+    if (res.success) {
+      showPdfInModal_(res.pdfUrl);
+      showStatus('สร้าง PDF สำเร็จ', 'ok');
+    } else {
+      showPdfModalError_('สร้าง PDF ไม่สำเร็จ: ' + res.error);
+      showStatus('สร้าง PDF ไม่สำเร็จ: ' + res.error, 'err');
+    }
+  } catch (err) {
+    showPdfModalError_('สร้าง PDF ไม่สำเร็จ: ' + err);
+    showStatus('สร้าง PDF ไม่สำเร็จ: ' + err, 'err');
+  }
+}
+</script>
+</body>
+</html>
