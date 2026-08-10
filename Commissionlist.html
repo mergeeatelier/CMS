@@ -11,9 +11,7 @@
     --text:#3a2f27; --muted:#8a7a6c;
   }
   *{box-sizing:border-box;}
-  /* กันเบราว์เซอร์มือถือ (โดยเฉพาะแนวนอน) ขยายขนาดตัวอักษรบางจุดเองอัตโนมัติ ทำให้ label บางอันดูใหญ่ไม่เท่ากันทั้งที่ font-size เท่ากัน */
-  html{-webkit-text-size-adjust:100%; text-size-adjust:100%;}
-  body{font-family:"Segoe UI","Sarabun",Tahoma,sans-serif; background:var(--cream); color:var(--text); margin:0; padding:0; -webkit-text-size-adjust:100%; text-size-adjust:100%;}
+  body{font-family:"Segoe UI","Sarabun",Tahoma,sans-serif; background:var(--cream); color:var(--text); margin:0; padding:0;}
   header{background:var(--brown-dark); color:#fff; padding:18px 24px;}
   header h1{margin:0; font-size:20px;}
   header p{margin:4px 0 0; font-size:13px; opacity:.8;}
@@ -29,11 +27,8 @@
   .field{flex:1 1 220px; display:flex; flex-direction:column; gap:4px; margin-bottom:10px;}
   .field.small{flex:0 1 160px;}
   label{font-size:12.5px; color:var(--muted); font-weight:600;}
-  /* font-size ตั้งแต่ 16px ขึ้นไป กัน iOS Safari ซูมเข้าอัตโนมัติตอนแตะช่องกรอกข้อมูล */
-  input, select, textarea{padding:9px 10px; border:1px solid var(--border); border-radius:7px; font-size:16px; font-family:inherit; background:#fff; color:var(--text);}
+  input, select, textarea{padding:9px 10px; border:1px solid var(--border); border-radius:7px; font-size:14px; font-family:inherit; background:#fff; color:var(--text);}
   input:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent);}
-  input::placeholder, textarea::placeholder{font-size:12.5px; color:var(--muted);}
-  select, input[type="date"]{font-size:12.5px;}
   input:disabled, select:disabled, textarea:disabled, input[readonly]{background:#eee7de; color:var(--muted); cursor:not-allowed;}
   input:disabled::placeholder{font-style:italic;}
   .field-hint{font-size:12px; color:var(--danger); margin-top:2px;}
@@ -56,10 +51,7 @@
   .btn-outline{background:#fff; color:var(--brown-dark); border:1px solid var(--border);}
   .btn-danger{background:#fff; color:var(--danger); border:1px solid #e3b8b8;}
   .btn-ghost{background:none; color:var(--accent-dark); padding:6px 10px;}
-  .btn-icon{display:inline-flex; align-items:center; justify-content:center; padding:6px 8px;}
   .btn-sm{padding:6px 11px; font-size:12.5px;}
-  .btn-2line{display:inline-flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.25; gap:1px;}
-  .btn-2line .th{display:block; font-size:0.76em; font-weight:400; opacity:0.85;}
   .search-row{display:flex; gap:8px; margin-bottom:14px;}
   .search-results{margin:8px 0 14px; border:1px solid var(--border); border-radius:7px; overflow:hidden; display:none;}
   .search-results div{padding:8px 12px; font-size:13px; border-bottom:1px solid var(--border); cursor:pointer;}
@@ -69,10 +61,7 @@
   .item-card .item-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;}
   .item-card .item-head b{color:var(--brown-dark); font-size:13.5px;}
   .img-preview-wrap{display:flex; align-items:center; gap:10px;}
-  .img-preview-wrap input[type="file"]{flex:1 1 auto; min-width:0; width:100%; font-size:13px; color:var(--muted); cursor:pointer;}
-  input[type="file"]::file-selector-button{padding:7px 14px; margin-right:10px; border:1px solid var(--border); border-radius:6px; background:#fff; color:var(--brown-dark); font-size:13px; font-family:inherit; cursor:pointer;}
-  input[type="file"]::file-selector-button:hover{background:#f4efe9;}
-  .img-preview{width:70px; height:70px; object-fit:cover; border-radius:7px; border:1px solid var(--border); display:none; background:#f4efe9; flex:0 0 auto;}
+  .img-preview{width:70px; height:70px; object-fit:cover; border-radius:7px; border:1px solid var(--border); display:none; background:#f4efe9;}
   .status-msg{padding:10px 14px; border-radius:7px; font-size:13.5px; margin-bottom:14px; display:none;}
   .status-msg.ok{background:#e7f5ea; color:var(--ok); display:block;}
   .status-msg.err{background:#fbe9e9; color:var(--danger); display:block;}
@@ -81,7 +70,7 @@
   table{width:100%; border-collapse:collapse; font-size:13px;}
   th, td{padding:9px 8px; border-bottom:1px solid var(--border); text-align:left; vertical-align:middle;}
   th{color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase;}
-  tr.row-selected td{background:#fbeee0;}
+  tr:hover td{background:#fbf8f4;}
   .badge{padding:3px 9px; border-radius:20px; font-size:11.5px; font-weight:600;}
   .badge.pending{background:#fdf1de; color:#a56a12;}
   .badge.doing{background:#e2eefb; color:#2464a8;}
@@ -89,24 +78,11 @@
   .badge.cancel{background:#f2e6e6; color:var(--danger);}
   select.badge{border:none; cursor:pointer; -webkit-appearance:none; appearance:none; font-family:inherit;}
   select.badge:disabled{cursor:wait; opacity:0.6;}
-  .status-cell{position:relative;}
-  .status-select-overlay{position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; border:none; margin:0; padding:0;}
   .list-toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}
   .list-toolbar input, .list-toolbar select{padding:8px 10px;}
   #listSearch{flex:1 1 220px;}
   .muted{color:var(--muted); font-size:12.5px;}
   .config-warning{background:#fff4e5; border:1px solid #f0c98a; color:#8a5a00; padding:10px 14px; border-radius:8px; font-size:13px; margin-bottom:16px;}
-
-  /* ---------- หน้าใส่รหัสผ่านก่อนเข้าใช้งาน ---------- */
-  .pw-gate-overlay{position:fixed; inset:0; background:var(--cream); z-index:9999; display:flex; align-items:center; justify-content:center; padding:24px;}
-  .pw-gate-card{background:#fff; border-radius:16px; padding:36px 30px; width:100%; max-width:340px; text-align:center; box-shadow:0 10px 40px rgba(0,0,0,0.12);}
-  .pw-gate-brand{margin:0 0 4px; font-size:21px; font-weight:800; color:var(--brown-dark);}
-  .pw-gate-app{margin:0 0 22px; font-size:13.5px; font-weight:700; color:var(--brown-dark);}
-  .pw-gate-hint{margin:0 0 14px; font-size:13.5px; color:var(--muted);}
-  .pw-gate-input{width:100%; margin-bottom:14px; text-align:center;}
-  .pw-gate-error{color:var(--danger); font-size:12.5px; margin:-6px 0 14px; display:none;}
-  .pw-gate-submit{width:100%; padding:12px; border:none; border-radius:9px; background:var(--brown-dark); color:#fff; font-weight:700; font-size:13.5px; cursor:pointer;}
-  .pw-gate-submit:hover{background:var(--accent-dark);}
 
   /* ---------- PDF Preview Modal ---------- */
   .pdf-modal-overlay{position:fixed; inset:0; background:rgba(30,26,20,0.55); z-index:1000; display:flex; align-items:center; justify-content:center; padding:24px;}
@@ -153,9 +129,6 @@
 </head>
 <body>
 <!-- ===== Mergee Auth Gate (Google Sign-In) — เพิ่มโดย Claude ===== -->
-<!-- ชั้นนี้แยกต่างหากจากเกตรหัสผ่านด้านล่าง (pwGateOverlay) — z-index สูงกว่า จึงบังทุกอย่างรวม
-     ทั้งเกตรหัสผ่านไว้จนกว่าจะล็อกอิน Google ผ่านก่อน แล้วค่อยเจอเกตรหัสผ่านตามปกติ (ซึ่งยังคง
-     ไม่จำการปลดล็อกเหมือนเดิม ต้องใส่รหัสใหม่ทุกครั้ง — การจำ 8 ชม. มีผลกับ Google Sign-In เท่านั้น) -->
 <div id="mergee-auth-gate" style="position:fixed;inset:0;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:999999;padding:20px;font-family:'Sarabun',sans-serif">
   <div style="background:#fff;border-radius:16px;padding:32px 28px;max-width:340px;width:100%;text-align:center">
     <div style="font-size:22px;font-weight:600;color:#1a1a2e;margin-bottom:6px">Mergee</div>
@@ -239,26 +212,14 @@
 </script>
 <!-- ===== จบ Mergee Auth Gate ===== -->
 
-<!-- ============ หน้าใส่รหัสผ่านก่อนเข้าใช้งาน ============ -->
-<div id="pwGateOverlay" class="pw-gate-overlay">
-  <div class="pw-gate-card">
-    <h1 class="pw-gate-brand">Mergee</h1>
-    <p class="pw-gate-app">CMS Order System</p>
-    <p class="pw-gate-hint">Enter password to continue</p>
-    <input type="password" id="pwGateInput" class="pw-gate-input" placeholder="Password" autocomplete="off">
-    <div id="pwGateError" class="pw-gate-error">รหัสผ่านไม่ถูกต้อง</div>
-    <button id="pwGateSubmit" class="pw-gate-submit" type="button">Enter</button>
-  </div>
-</div>
-
 <header>
-  <h1>CMS Custom Painting Order System</h1>
-  <p>ระบบบันทึกรายการภาพวาดสั่งทำ</p>
+  <h1>ระบบบันทึกรายการภาพวาดสั่งทำ</h1>
+  <p>CMS Custom Painting Order System</p>
 </header>
 
 <div class="tabs">
-  <button class="tab-btn active" data-tab="form">Order Form</button>
-  <button class="tab-btn" data-tab="list">All Orders / Queue</button>
+  <button class="tab-btn active" data-tab="form">ฟอร์มบันทึกรายการ</button>
+  <button class="tab-btn" data-tab="list">รายการทั้งหมด / คิวงาน</button>
 </div>
 
 <main>
@@ -274,7 +235,7 @@
     <div class="card">
       <div class="top-bar">
         <div class="order-id-box">
-          Commission ID - รหัสออเดอร์: <span class="id-val" id="orderIdDisplay">— ยังไม่สร้าง —</span>
+          Commission ID: <span class="id-val" id="orderIdDisplay">— ยังไม่สร้าง —</span>
         </div>
       </div>
       <div class="search-row">
@@ -285,80 +246,71 @@
       <div class="row">
         <div class="field">
           <div class="field-label-row">
-            <label>Project ID - รหัสโปรเจกต์</label>
-            <button type="button" class="btn-ghost btn-sm btn-2line" id="btnEditProjectIds" style="display:none;">Edit<span class="th">แก้ไข</span></button>
+            <label>Project ID</label>
+            <button type="button" class="btn-ghost btn-sm" id="btnEditProjectIds" style="display:none;">แก้ไข</button>
           </div>
           <div id="projectIdsContainer"></div>
-          <button type="button" class="btn-outline btn-sm btn-2line" id="btnAddProjectId">+ Add Project ID<span class="th">เพิ่ม Project ID</span></button>
+          <button type="button" class="btn-outline btn-sm" id="btnAddProjectId">+ เพิ่ม Project ID</button>
         </div>
         <div class="field">
           <div class="field-label-row">
-            <label>Quotation No. - เลขที่ใบเสนอราคา</label>
-            <button type="button" class="btn-ghost btn-sm btn-2line" id="btnEditQuotationNos" style="display:none;">Edit<span class="th">แก้ไข</span></button>
+            <label>Quotation No.</label>
+            <button type="button" class="btn-ghost btn-sm" id="btnEditQuotationNos" style="display:none;">แก้ไข</button>
           </div>
           <div id="quotationNosContainer"></div>
-          <button type="button" class="btn-outline btn-sm btn-2line" id="btnAddQuotationNo">+ Add Quotation No.<span class="th">เพิ่มเลขที่ใบเสนอราคา</span></button>
+          <button type="button" class="btn-outline btn-sm" id="btnAddQuotationNo">+ เพิ่มเลขที่ใบเสนอราคา</button>
         </div>
       </div>
     </div>
 
     <div class="card">
-      <h2>Customer Information - ข้อมูลลูกค้า</h2>
+      <h2>ข้อมูลลูกค้า</h2>
       <div class="row">
-        <div class="field">
-          <label>Company - บริษัท/หน่วยงาน</label>
-          <input type="text" id="f_company" autocomplete="off">
-          <div class="search-results" id="companySearchResults"></div>
-        </div>
-        <div class="field">
-          <label>Customer Name - ชื่อลูกค้า *</label>
-          <input type="text" id="f_customerName" autocomplete="off">
-          <div class="search-results" id="customerNameSearchResults"></div>
-        </div>
-        <div class="field small"><label>Phone - เบอร์โทร *</label><input type="text" id="f_phone"></div>
-        <div class="field"><label>Email - อีเมล</label><input type="email" id="f_email"></div>
-        <div class="field small"><label>Line ID - ไลน์ไอดี</label><input type="text" id="f_lineId"></div>
+        <div class="field"><label>บริษัท/หน่วยงาน</label><input type="text" id="f_company"></div>
+        <div class="field"><label>ชื่อลูกค้า *</label><input type="text" id="f_customerName"></div>
+        <div class="field small"><label>เบอร์โทร *</label><input type="text" id="f_phone"></div>
+        <div class="field"><label>อีเมล</label><input type="email" id="f_email"></div>
+        <div class="field small"><label>ไลน์ไอดี</label><input type="text" id="f_lineId"></div>
       </div>
       <div class="row">
-        <div class="field" style="flex:2 1 300px;"><label>Delivery Address - ที่อยู่จัดส่ง</label><textarea id="f_address" rows="2"></textarea></div>
-        <div class="field small"><label>Completion Date - วันนัดรับ-ส่งงาน</label><input type="date" id="f_appointmentDate"></div>
+        <div class="field" style="flex:2 1 300px;"><label>ที่อยู่จัดส่ง</label><textarea id="f_address" rows="2"></textarea></div>
+        <div class="field small"><label>วันนัดรับ/ส่งงาน (Completion Date)</label><input type="date" id="f_appointmentDate"></div>
         <div class="field">
-          <label>Delivery Option - วิธีนัดรับ-ส่งงาน</label>
+          <label>วิธีนัดรับ-ส่งงาน (Delivery Option)</label>
           <input type="text" id="f_appointmentMethod" list="methodList" placeholder="เช่น มารับเองที่ร้าน">
           <datalist id="methodList">
-            <option value="Pick up at shop - มารับเองที่ร้าน">
-            <option value="Shipping via post/courier - จัดส่งทางไปรษณีย์/ขนส่ง">
-            <option value="Deliver to customer's home - นัดส่งถึงบ้านลูกค้า">
-            <option value="Delivery (Grab/Lalamove) - เดลิเวอรี่ (Grab/Lalamove)">
+            <option value="มารับเองที่ร้าน">
+            <option value="จัดส่งทางไปรษณีย์/ขนส่ง">
+            <option value="นัดส่งถึงบ้านลูกค้า">
+            <option value="เดลิเวอรี่ (Grab/Lalamove)">
           </datalist>
         </div>
-        <datalist id="staffDatalist"></datalist>
         <div class="field small">
-          <label>Status - สถานะงาน (เปลี่ยนได้ที่หน้าคิวงาน)</label>
-          <select id="f_status" disabled title="เปลี่ยนสถานะได้ที่หน้าคิวงานเท่านั้น">
-            <option value="รอดำเนินการ">Pending - รอดำเนินการ</option>
-            <option value="กำลังทำ">In Progress - กำลังทำ</option>
-            <option value="เสร็จแล้ว">Completed - เสร็จแล้ว</option>
-            <option value="ยกเลิก">Cancelled - ยกเลิก</option>
+          <label>สถานะงาน</label>
+          <select id="f_status">
+            <option>รอดำเนินการ</option>
+            <option>กำลังทำ</option>
+            <option>เสร็จแล้ว</option>
+            <option>ยกเลิก</option>
           </select>
         </div>
       </div>
       <div class="row">
-        <div class="field small"><label>Timeline - ระยะเวลา (คำนวณอัตโนมัติ)</label><input type="text" id="f_timeline" readonly></div>
+        <div class="field small"><label>Timeline (คำนวณอัตโนมัติ)</label><input type="text" id="f_timeline" readonly></div>
       </div>
     </div>
 
     <div class="card">
-      <h2>Order Items - รายการสั่งทำ</h2>
+      <h2>รายการสั่งทำ</h2>
       <div id="itemsContainer"></div>
-      <button class="btn-outline btn-2line" id="btnAddItem" style="display:block; width:100%; text-align:center;">+ Add Item<span class="th">เพิ่มรายการ</span></button>
+      <button class="btn-outline" id="btnAddItem" style="display:block; width:100%; text-align:center;">+ เพิ่มรายการ</button>
     </div>
 
     <div style="margin-bottom:16px;">
-      <button class="btn-primary btn-2line" id="btnSave" style="display:block; width:100%; padding:11px 26px; font-size:14.5px; text-align:center;">Save<span class="th">บันทึกข้อมูล</span></button>
+      <button class="btn-primary" id="btnSave" style="display:block; width:100%; padding:11px 26px; font-size:14.5px; text-align:center;">บันทึกข้อมูล</button>
       <div class="actions-after-save" id="afterSaveActions" style="display:none;">
-        <button class="btn-dark btn-2line" id="btnPrint" style="flex:1; text-align:center;">Print / Preview<span class="th">พิมพ์ / ดูตัวอย่าง</span></button>
-        <button class="btn-outline btn-2line" id="btnNewOrder" style="flex:1; text-align:center;">+ New Order<span class="th">เริ่มรายการใหม่</span></button>
+        <button class="btn-dark" id="btnPrint" style="flex:1; text-align:center;">พิมพ์ / ดูตัวอย่าง</button>
+        <button class="btn-outline" id="btnNewOrder" style="flex:1; text-align:center;">+ เริ่มรายการใหม่</button>
       </div>
     </div>
   </section>
@@ -369,19 +321,14 @@
       <div class="list-toolbar">
         <input type="text" id="listSearch" placeholder="ค้นหาชื่อลูกค้า / รหัสออเดอร์">
         <select id="listStatusFilter">
-          <option value="">All Statuses - ทุกสถานะ</option>
-          <option value="รอดำเนินการ">Pending - รอดำเนินการ</option>
-          <option value="กำลังทำ">In Progress - กำลังทำ</option>
-          <option value="เสร็จแล้ว">Completed - เสร็จแล้ว</option>
-          <option value="ยกเลิก">Cancelled - ยกเลิก</option>
+          <option value="">ทุกสถานะ</option>
+          <option>รอดำเนินการ</option>
+          <option>กำลังทำ</option>
+          <option>เสร็จแล้ว</option>
+          <option>ยกเลิก</option>
         </select>
-        <button class="btn-dark btn-sm" id="btnPrintSelected" style="display:inline-flex; align-items:center; gap:6px; justify-content:center;">
-          <span class="btn-2line">Print Selected<span class="th">พิมพ์ที่เลือก</span></span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M8 4h9a1 1 0 0 1 1 1v11"></path>
-            <rect x="4" y="8" width="12" height="14" rx="1"></rect>
-          </svg>
-        </button>
+        <button class="btn-outline btn-sm" id="btnRefreshList">รีเฟรช</button>
+        <button class="btn-dark btn-sm" id="btnPrintSelected">พิมพ์ที่เลือก</button>
       </div>
       <div class="table-scroll">
         <table>
@@ -389,15 +336,12 @@
             <tr>
               <th><input type="checkbox" id="selectAll"></th>
               <th></th>
-              <th>Order ID</th>
-              <th>Client</th>
-              <th>Delivery Date</th>
-              <th>Status</th>
-              <th>Countdown</th>
-              <th>Items</th>
-              <th>Assigned</th>
-              <th>Last Updated</th>
-              <th></th>
+              <th>รหัสออเดอร์</th>
+              <th>ลูกค้า</th>
+              <th>วันนัดส่งงาน</th>
+              <th>สถานะ</th>
+              <th>จำนวนรายการ</th>
+              <th>อัปเดตล่าสุด</th>
               <th></th>
             </tr>
           </thead>
@@ -415,7 +359,7 @@
     <div class="pdf-modal-header">
       <span id="pdfModalTitle">ตัวอย่าง PDF</span>
       <div>
-        <a id="pdfModalOpenNewTab" href="#" target="_blank" rel="noopener" class="pdf-modal-link" style="display:none;">เปิดในแท็บใหม่</a>
+        <a id="pdfModalOpenNewTab" href="#" target="_blank" rel="noopener" class="pdf-modal-link" style="display:none;">เปิดในแท็บใหม่ ↗</a>
         <button id="pdfModalClose" class="pdf-modal-close" type="button" aria-label="ปิด">&times;</button>
       </div>
     </div>
@@ -430,81 +374,7 @@
   </div>
 </div>
 
-<!-- ============ ตั้งค่าก่อนสร้าง PDF รวม (พิมพ์ที่เลือก) ============ -->
-<div id="batchOptionsOverlay" class="pdf-modal-overlay" style="display:none;">
-  <div class="pdf-modal-box" style="max-width:440px; height:auto;">
-    <div style="padding:20px;">
-      <label style="display:flex; align-items:flex-start; gap:10px; color:var(--text); cursor:pointer;">
-        <input type="checkbox" id="optIncludeContactInfo" checked style="width:auto; margin-top:2px;">
-        <span>
-          <span style="display:block; font-size:15.5px; font-weight:700;">แสดงข้อมูลติดต่อลูกค้า</span>
-          <span style="display:block; font-size:12px; font-weight:400; color:var(--muted); margin-top:2px;">(Company / Contact Person / Email / Phone / Line ID / Date Submitted)</span>
-        </span>
-      </label>
-      <div style="display:flex; gap:10px; margin-top:20px;">
-        <button id="batchOptionsCancel" class="btn-outline btn-2line" style="flex:1; text-align:center;">Cancel<span class="th">ยกเลิก</span></button>
-        <button id="batchOptionsConfirm" class="btn-dark btn-2line" style="flex:1; text-align:center;">Create PDF<span class="th">สร้าง PDF</span></button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ============ ลายเซ็นผู้ตรวจสอบ (Reviewer) ============ -->
-<div id="signatureOverlay" class="pdf-modal-overlay" style="display:none; z-index:1001;">
-  <div class="pdf-modal-box" style="max-width:440px; height:auto;">
-    <div style="padding:20px;">
-      <div style="font-size:15.5px; font-weight:700; color:var(--brown-dark); margin-bottom:2px;">Sign to Approve</div>
-      <div style="font-size:0.76em; font-weight:400; color:var(--muted); margin-bottom:10px;">เซ็นอนุมัติ</div>
-      <canvas id="signatureCanvas" width="380" height="180" style="width:100%; height:180px; border:1px solid var(--border); border-radius:9px; background:#fff; touch-action:none; cursor:crosshair; display:block;"></canvas>
-      <div style="display:flex; gap:10px; margin-top:14px;">
-        <button id="signatureClear" type="button" class="btn-outline btn-sm btn-2line" style="flex:1; text-align:center;">Clear<span class="th">ล้าง</span></button>
-        <button id="signatureCancel" type="button" class="btn-outline btn-sm btn-2line" style="flex:1; text-align:center;">Cancel<span class="th">ยกเลิก</span></button>
-        <button id="signatureSave" type="button" class="btn-dark btn-sm btn-2line" style="flex:1; text-align:center;">Save<span class="th">บันทึกลายเซ็น</span></button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ============ มอบหมาย Production staff / Reviewer (จากหน้าคิวงาน) ============ -->
-<div id="assignOverlay" class="pdf-modal-overlay" style="display:none;">
-  <div class="pdf-modal-box" style="max-width:640px; height:auto; max-height:85vh;">
-    <div style="padding:20px 20px 4px; flex:0 0 auto;">
-      <div style="font-size:15.5px; font-weight:700; color:var(--brown-dark);">Assign Staff</div>
-      <div style="font-size:0.76em; font-weight:400; color:var(--muted); margin-bottom:4px;">มอบหมายผู้ผลิต/ผู้ตรวจสอบ &mdash; <span id="assignOrderIdLabel"></span></div>
-    </div>
-    <div id="assignItemsList" style="padding:10px 20px 20px; overflow-y:auto; flex:1 1 auto;"></div>
-    <div style="padding:14px 20px; border-top:1px solid var(--border); flex:0 0 auto;">
-      <button id="assignClose" type="button" class="btn-outline btn-2line" style="width:100%; text-align:center;">Close<span class="th">ปิด</span></button>
-    </div>
-  </div>
-</div>
-
 <script>
-/* ========================= หน้าใส่รหัสผ่าน ========================= */
-// กันการเข้าถึงแบบผิวเผินเท่านั้น (เช็คฝั่งหน้าเว็บล้วนๆ) — ไม่ใช่ระบบความปลอดภัยจริง
-// ใครก็ตามที่ดูซอร์สโค้ดหน้านี้จะเห็นรหัสผ่านได้ ไม่ควรใช้ป้องกันข้อมูลสำคัญจริงจัง
-const PW_GATE_VALID = ['M4599', 'Staff002'];
-
-// ไม่จำการปลดล็อกไว้เลย — ต้องใส่รหัสผ่านใหม่ทุกครั้งที่เปิด/รีเฟรชหน้านี้
-function pwGateCheck_() {
-  const val = document.getElementById('pwGateInput').value;
-  if (PW_GATE_VALID.includes(val)) {
-    document.getElementById('pwGateOverlay').style.display = 'none';
-  } else {
-    document.getElementById('pwGateError').style.display = 'block';
-    document.getElementById('pwGateInput').value = '';
-    document.getElementById('pwGateInput').focus();
-  }
-}
-
-document.getElementById('pwGateSubmit').addEventListener('click', pwGateCheck_);
-document.getElementById('pwGateInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') pwGateCheck_();
-});
-document.getElementById('pwGateInput').addEventListener('input', () => {
-  document.getElementById('pwGateError').style.display = 'none';
-});
-
 /* =========================================================
    ตั้งค่า: วาง Web App URL ของ Google Apps Script ตรงนี้
    ========================================================= */
@@ -513,10 +383,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzdFsgtYH_NCnBkdj4bbSjf
 /* ========================= STATE ========================= */
 let currentOrder = { orderId: '', projectIds: [], quotationNos: [], items: [] };
 let allOrders = [];
-// เก็บ orderId ที่ติ๊กเลือกไว้ในหน้าคิวงาน แยกจาก DOM checkbox โดยตรง — กันไม่ให้การเลือกหายตอนค้นหา/กรองแล้วตารางถูก render ใหม่
-let selectedOrderIds = new Set();
 let allProjects = [];
-let allCustomers = [];
 let projectIdsLocked = false;
 let quotationNosLocked = false;
 let searchDebounceTimer = null;
@@ -540,50 +407,20 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   document.getElementById('btnPrint').addEventListener('click', previewPdf);
   document.getElementById('btnNewOrder').addEventListener('click', startNewOrder);
+  document.getElementById('btnRefreshList').addEventListener('click', loadList);
   document.getElementById('listSearch').addEventListener('input', renderListTable);
   document.getElementById('listStatusFilter').addEventListener('change', renderListTable);
   document.getElementById('selectAll').addEventListener('change', e => {
-    // ติ๊ก/ยกเลิกเฉพาะแถวที่กำลังแสดงอยู่ตอนนี้ (หลังกรอง/ค้นหา) แล้วซิงก์เข้า selectedOrderIds ด้วย
-    document.querySelectorAll('.row-check').forEach(cb => {
-      cb.checked = e.target.checked;
-      if (e.target.checked) selectedOrderIds.add(cb.dataset.id); else selectedOrderIds.delete(cb.dataset.id);
-      cb.closest('tr').classList.toggle('row-selected', cb.checked);
-    });
+    document.querySelectorAll('.row-check').forEach(cb => cb.checked = e.target.checked);
   });
-  document.getElementById('btnPrintSelected').addEventListener('click', openBatchOptionsModal_);
-  document.getElementById('batchOptionsCancel').addEventListener('click', closeBatchOptionsModal_);
-  document.getElementById('batchOptionsConfirm').addEventListener('click', () => {
-    const includeContactInfo = document.getElementById('optIncludeContactInfo').checked;
-    const handler = pdfOptionsConfirmHandler_;
-    closeBatchOptionsModal_();
-    if (handler) handler(includeContactInfo);
-  });
+  document.getElementById('btnPrintSelected').addEventListener('click', printSelectedPdf);
   document.getElementById('pdfModalClose').addEventListener('click', closePdfModal_);
   document.getElementById('pdfModalOverlay').addEventListener('click', e => {
     if (e.target.id === 'pdfModalOverlay') closePdfModal_();
   });
-  document.getElementById('batchOptionsOverlay').addEventListener('click', e => {
-    if (e.target.id === 'batchOptionsOverlay') closeBatchOptionsModal_();
-  });
-  initSignaturePad_();
-  document.getElementById('signatureClear').addEventListener('click', clearSignatureCanvas_);
-  document.getElementById('signatureCancel').addEventListener('click', closeSignatureModal_);
-  document.getElementById('signatureSave').addEventListener('click', saveSignature_);
-  document.getElementById('signatureOverlay').addEventListener('click', e => {
-    if (e.target.id === 'signatureOverlay') closeSignatureModal_();
-  });
-  document.getElementById('assignClose').addEventListener('click', closeAssignModal_);
-  document.getElementById('assignOverlay').addEventListener('click', e => {
-    if (e.target.id === 'assignOverlay') closeAssignModal_();
-  });
   document.addEventListener('keydown', e => {
-    if (e.key !== 'Escape') return;
-    if (document.getElementById('pdfModalOverlay').style.display !== 'none') closePdfModal_();
-    if (document.getElementById('batchOptionsOverlay').style.display !== 'none') closeBatchOptionsModal_();
-    if (document.getElementById('signatureOverlay').style.display !== 'none') closeSignatureModal_();
-    if (document.getElementById('assignOverlay').style.display !== 'none') closeAssignModal_();
+    if (e.key === 'Escape' && document.getElementById('pdfModalOverlay').style.display !== 'none') closePdfModal_();
   });
-  loadStaffList_();
   document.getElementById('btnAddProjectId').addEventListener('click', () => {
     currentOrder.projectIds.push('');
     renderProjectIds();
@@ -604,19 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadList();
   loadProjects();
-  loadCustomers_();
   startNewOrder();
-
-  document.getElementById('f_company').addEventListener('input', e => onCustomerFieldInput_(e, 'companySearchResults'));
-  document.getElementById('f_customerName').addEventListener('input', e => onCustomerFieldInput_(e, 'customerNameSearchResults'));
-  document.addEventListener('click', e => {
-    ['companySearchResults', 'customerNameSearchResults'].forEach(id => {
-      const box = document.getElementById(id);
-      if (box && !box.contains(e.target) && e.target.id !== 'f_company' && e.target.id !== 'f_customerName') {
-        box.style.display = 'none';
-      }
-    });
-  });
 });
 
 /* ========================= PROJECTS (dropdown/validate) ========================= */
@@ -632,77 +457,6 @@ async function loadProjects() {
   } catch (err) {
     // เงียบไว้ ไม่ต้องรบกวนผู้ใช้ถ้าดึงลิสต์ Project ไม่ได้ ยังพิมพ์ Project ID เองได้ตามปกติ
   }
-}
-
-/* ========================= STAFF LIST (dropdown สำหรับ Production staff / Reviewer) ========================= */
-async function loadStaffList_() {
-  try {
-    const res = await apiGet('staffList');
-    if (!res.success) return;
-    const datalist = document.getElementById('staffDatalist');
-    datalist.innerHTML = (res.staff || []).map(name => `<option value="${escapeHtml(name)}">`).join('');
-  } catch (err) {
-    // เงียบไว้ ไม่ต้องรบกวนผู้ใช้ถ้าดึงลิสต์ชื่อไม่ได้ ยังพิมพ์ชื่อเองได้ตามปกติ
-  }
-}
-
-/* ========================= CUSTOMERS (ค้นหาลูกค้าเดิมมากรอกฟอร์มอัตโนมัติ) ========================= */
-async function loadCustomers_() {
-  try {
-    const res = await apiGet('customers');
-    if (!res.success) return;
-    allCustomers = res.customers || [];
-  } catch (err) {
-    // เงียบไว้ ไม่ต้องรบกวนผู้ใช้ถ้าดึงลิสต์ลูกค้าไม่ได้ ยังกรอกฟอร์มเองได้ตามปกติ
-  }
-}
-
-// ใช้ร่วมกันทั้งช่อง Company และ Customer Name — พิมพ์แล้วขึ้นลิสต์ลูกค้าเดิมที่ตรงกับชื่อ/บริษัท/เบอร์โทรให้เลือก
-function onCustomerFieldInput_(e, resultsBoxId) {
-  const q = e.target.value.trim().toLowerCase();
-  const box = document.getElementById(resultsBoxId);
-  if (!q) { box.style.display = 'none'; box.innerHTML = ''; return; }
-
-  const matches = allCustomers.filter(c =>
-    c.customerName.toLowerCase().includes(q) ||
-    c.phone.toLowerCase().includes(q) ||
-    c.company.toLowerCase().includes(q)
-  ).slice(0, 8);
-
-  if (matches.length === 0) { box.style.display = 'none'; box.innerHTML = ''; return; }
-
-  box.innerHTML = matches.map(c => `
-    <div data-customer-idx="${allCustomers.indexOf(c)}">
-      <b>${escapeHtml(c.customerName || '-')}</b> — ${escapeHtml(c.phone || '-')}${c.company ? ` (${escapeHtml(c.company)})` : ''}
-    </div>
-  `).join('');
-  box.style.display = 'block';
-
-  box.querySelectorAll('[data-customer-idx]').forEach(div => {
-    div.addEventListener('click', () => {
-      applyCustomer_(allCustomers[Number(div.dataset.customerIdx)]);
-      box.style.display = 'none';
-      box.innerHTML = '';
-    });
-  });
-}
-
-// เอาข้อมูลลูกค้าเดิมที่เลือกมากรอกลงฟอร์ม (ไม่แตะ orderId/status/รายการภาพ — เติมเฉพาะข้อมูลติดต่อลูกค้า)
-function applyCustomer_(c) {
-  if (!c) return;
-  document.getElementById('f_company').value = c.company || '';
-  document.getElementById('f_customerName').value = c.customerName || '';
-  document.getElementById('f_phone').value = c.phone || '';
-  document.getElementById('f_email').value = c.email || '';
-  document.getElementById('f_lineId').value = c.lineId || '';
-  document.getElementById('f_address').value = c.address || '';
-  currentOrder.company = c.company || '';
-  currentOrder.customerName = c.customerName || '';
-  currentOrder.phone = c.phone || '';
-  currentOrder.email = c.email || '';
-  currentOrder.lineId = c.lineId || '';
-  currentOrder.address = c.address || '';
-  showStatus(`ดึงข้อมูลลูกค้า ${c.customerName || c.phone} มากรอกให้แล้ว`, 'ok');
 }
 
 function validateProjectIdInput(el) {
@@ -725,7 +479,7 @@ function renderProjectIds() {
       <input type="text" class="pid-input" data-idx="${idx}" value="${escapeHtml(val)}"
         placeholder="${projectIdsLocked ? '- ดึงข้อมูลอัตโนมัติ -' : 'รหัสอ้างอิงโปรเจกต์'}"
         list="projectIdList" autocomplete="off" ${projectIdsLocked ? 'disabled' : ''}>
-      ${(!projectIdsLocked && list.length > 1) ? `<button type="button" class="btn-danger btn-sm btn-2line" data-remove-pid="${idx}">Delete<span class="th">ลบ</span></button>` : ''}
+      ${(!projectIdsLocked && list.length > 1) ? `<button type="button" class="btn-danger btn-sm" data-remove-pid="${idx}">ลบ</button>` : ''}
     </div>
   `).join('');
 
@@ -756,7 +510,7 @@ function renderQuotationNos() {
       <input type="text" class="qn-input" data-idx="${idx}" value="${escapeHtml(val)}"
         placeholder="${quotationNosLocked ? '- ดึงข้อมูลอัตโนมัติ -' : 'เลขที่ใบเสนอราคา'}"
         ${quotationNosLocked ? 'disabled' : ''}>
-      ${(!quotationNosLocked && list.length > 1) ? `<button type="button" class="btn-danger btn-sm btn-2line" data-remove-qn="${idx}">Delete<span class="th">ลบ</span></button>` : ''}
+      ${(!quotationNosLocked && list.length > 1) ? `<button type="button" class="btn-danger btn-sm" data-remove-qn="${idx}">ลบ</button>` : ''}
     </div>
   `).join('');
 
@@ -906,7 +660,7 @@ function computeTimelineDisplay(createdAtVal, appointmentDateStr) {
   const created = new Date(c.getFullYear(), c.getMonth(), c.getDate());
   const diffDays = Math.round((appt - created) / 86400000);
   if (isNaN(diffDays) || diffDays <= 0) return '-';
-  return diffDays + ' Day(s)';
+  return diffDays + ' วัน';
 }
 
 function updateTimelineDisplay() {
@@ -916,10 +670,7 @@ function updateTimelineDisplay() {
 
 /* ========================= ITEMS ========================= */
 function addItem() {
-  currentOrder.items.push({
-    description: '', size: '', material: '', color: '', colors: [], other: '', imageUrl: '', imageData: '',
-    productionStaff: '', reviewerName: '', reviewerSignatureUrl: '', reviewerSignatureData: '', reviewedAt: ''
-  });
+  currentOrder.items.push({ description: '', size: '', material: '', color: '', colors: [], other: '', imageUrl: '', imageData: '' });
 }
 
 function isValidHex_(v) {
@@ -958,12 +709,12 @@ function renderItems() {
     card.className = 'item-card';
     card.innerHTML = `
       <div class="item-head">
-        <b>Item - รายการที่ ${idx + 1}</b>
-        <button class="btn-danger btn-sm btn-2line" data-remove="${idx}">Delete Item<span class="th">ลบรายการนี้</span></button>
+        <b>รายการที่ ${idx + 1}</b>
+        <button class="btn-danger btn-sm" data-remove="${idx}">ลบรายการนี้</button>
       </div>
       <div class="row">
         <div class="field">
-          <label>Attached Image - รูปภาพแนบ</label>
+          <label>รูปภาพแนบ</label>
           <div class="img-preview-wrap">
             <img class="img-preview" id="preview-${idx}" src="${escapeHtml(previewSrc)}" style="${previewSrc ? 'display:block;' : ''}" onerror="this.style.display='none';">
             <input type="file" accept="image/*" data-imgidx="${idx}">
@@ -972,22 +723,22 @@ function renderItems() {
       </div>
       <div class="row">
         <div class="field" style="flex:2 1 260px;">
-          <label>Description - คำอธิบายภาพ *</label>
+          <label>คำอธิบายภาพ *</label>
           <textarea data-field="description" data-idx="${idx}" rows="2" placeholder="เช่น ภาพวาดสีน้ำมันรูปครอบครัว 3 คน">${item.description}</textarea>
         </div>
-        <div class="field small"><label>Size (cm) - ขนาด</label><input type="text" data-field="size" data-idx="${idx}" value="${item.size}" placeholder="เช่น 40x60 ซม."></div>
-        <div class="field small"><label>Material - วัสดุ</label><input type="text" data-field="material" data-idx="${idx}" value="${item.material}" placeholder="เช่น ผ้าใบ, กระดาษ"></div>
+        <div class="field small"><label>ขนาด</label><input type="text" data-field="size" data-idx="${idx}" value="${item.size}" placeholder="เช่น 40x60 ซม."></div>
+        <div class="field small"><label>วัสดุ</label><input type="text" data-field="material" data-idx="${idx}" value="${item.material}" placeholder="เช่น ผ้าใบ, กระดาษ"></div>
       </div>
       <div class="row">
         <div class="field" style="flex:2 1 300px;">
-          <label>Color - สี (เลือกจากสวอทช์หรือพิมพ์โค้ดสี เพิ่มได้หลายสี)</label>
+          <label>สี (เลือกจากสวอทช์หรือพิมพ์โค้ดสี เพิ่มได้หลายสี)</label>
           <div>${colorsRowsHtml}</div>
-          <button type="button" class="btn-outline btn-sm btn-2line" data-add-color="${idx}">+ Add Color<span class="th">เพิ่มสี</span></button>
+          <button type="button" class="btn-outline btn-sm" data-add-color="${idx}">+ เพิ่มสี</button>
         </div>
       </div>
       <div class="row">
         <div class="field" style="flex:2 1 260px;">
-          <label>Notes - หมายเหตุ/อื่นๆ</label>
+          <label>หมายเหตุ/อื่นๆ</label>
           <textarea data-field="other" data-idx="${idx}" rows="2">${item.other}</textarea>
         </div>
       </div>
@@ -1060,95 +811,6 @@ function renderItems() {
       }
     });
   });
-  // หมายเหตุ: Production Staff / Reviewer ของแต่ละรายการ ย้ายไปแก้ได้เฉพาะที่หน้า All Orders/Queue
-  // ผ่านปุ่ม "มอบหมาย" (modal Assign Staff) เท่านั้น ไม่แสดงในฟอร์มบันทึกรายการนี้แล้ว
-}
-
-// แปลงเวลาเซ็นอนุมัติ (ISO string) ให้เป็นวันที่-เวลาแบบอ่านง่าย DD/MM/YYYY HH:mm
-function formatSignedDateTime_(iso) {
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return String(iso);
-  const dd = String(d.getDate()).padStart(2, '0');
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const yyyy = d.getFullYear();
-  const hh = String(d.getHours()).padStart(2, '0');
-  const mi = String(d.getMinutes()).padStart(2, '0');
-  return `${dd}/${mm}/${yyyy} ${hh}:${mi}`;
-}
-
-/* ========================= ลายเซ็นผู้ตรวจสอบ (Signature pad) ========================= */
-let signatureCtx_ = null;
-let signatureSaveCallback_ = null; // เรียกด้วย (dataUrl, isoTimestamp) เมื่อกดบันทึกลายเซ็น — ใช้ร่วมกันได้ทั้งจากฟอร์มออเดอร์และ modal มอบหมายในหน้าคิวงาน
-let signatureDrawing_ = false;
-let signatureHasStroke_ = false;
-
-function initSignaturePad_() {
-  const canvas = document.getElementById('signatureCanvas');
-  signatureCtx_ = canvas.getContext('2d');
-  signatureCtx_.lineWidth = 2.5;
-  signatureCtx_.lineCap = 'round';
-  signatureCtx_.lineJoin = 'round';
-  signatureCtx_.strokeStyle = '#3a2a20';
-
-  function posFromEvent(e) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
-  }
-
-  canvas.addEventListener('pointerdown', (e) => {
-    signatureDrawing_ = true;
-    signatureHasStroke_ = true;
-    const p = posFromEvent(e);
-    signatureCtx_.beginPath();
-    signatureCtx_.moveTo(p.x, p.y);
-    canvas.setPointerCapture(e.pointerId);
-  });
-  canvas.addEventListener('pointermove', (e) => {
-    if (!signatureDrawing_) return;
-    const p = posFromEvent(e);
-    signatureCtx_.lineTo(p.x, p.y);
-    signatureCtx_.stroke();
-  });
-  const endStroke = () => { signatureDrawing_ = false; };
-  canvas.addEventListener('pointerup', endStroke);
-  canvas.addEventListener('pointercancel', endStroke);
-  canvas.addEventListener('pointerleave', endStroke);
-}
-
-function clearSignatureCanvas_() {
-  const canvas = document.getElementById('signatureCanvas');
-  signatureCtx_.clearRect(0, 0, canvas.width, canvas.height);
-  signatureHasStroke_ = false;
-}
-
-// เปิด modal วาดลายเซ็น — onSave(dataUrl, isoTimestamp) จะถูกเรียกเมื่อกดบันทึกลายเซ็นสำเร็จ (ผู้เรียกกำหนดเองว่าจะเอาผลไปทำอะไรต่อ)
-function openSignatureModal_(onSave) {
-  signatureSaveCallback_ = onSave;
-  clearSignatureCanvas_();
-  document.getElementById('signatureOverlay').style.display = 'flex';
-}
-
-function closeSignatureModal_() {
-  document.getElementById('signatureOverlay').style.display = 'none';
-  signatureSaveCallback_ = null;
-}
-
-function saveSignature_() {
-  if (!signatureHasStroke_) {
-    showStatus('กรุณาวาดลายเซ็นก่อนบันทึก', 'err');
-    return;
-  }
-  if (!signatureSaveCallback_) {
-    closeSignatureModal_();
-    return;
-  }
-  const canvas = document.getElementById('signatureCanvas');
-  const dataUrl = canvas.toDataURL('image/png');
-  const cb = signatureSaveCallback_;
-  closeSignatureModal_();
-  cb(dataUrl, new Date().toISOString());
 }
 
 function fileToCompressedDataUrl(file) {
@@ -1205,15 +867,13 @@ async function saveOrder() {
       currentOrder.quotationNos = (currentOrder.quotationNo || '').split(',').map(s => s.trim()).filter(Boolean);
       projectIdsLocked = currentOrder.projectIds.length > 0;
       quotationNosLocked = currentOrder.quotationNos.length > 0;
-      // เก็บ imageData/reviewerSignatureData ที่เพิ่งอัปโหลดสำเร็จไว้เป็น imageUrl/reviewerSignatureUrl แล้ว ไม่ต้องส่งซ้ำ
-      currentOrder.items.forEach(it => { it.imageData = ''; it.reviewerSignatureData = ''; parseItemColors_(it); });
+      // เก็บ imageData ที่เพิ่งอัปโหลดสำเร็จไว้เป็น imageUrl แล้ว ไม่ต้องส่งซ้ำ
+      currentOrder.items.forEach(it => { it.imageData = ''; parseItemColors_(it); });
       fillFormFromOrder(currentOrder);
       renderProjectIds();
       renderQuotationNos();
       renderItems();
       loadList();
-      loadStaffList_(); // เผื่อมีชื่อ Production staff/Reviewer ใหม่ถูกเพิ่มเข้ามารอบนี้
-      loadCustomers_(); // เผื่อมีลูกค้าใหม่ หรือข้อมูลลูกค้าเดิมถูกอัปเดตรอบนี้
 
       // สร้าง PDF ให้อัตโนมัติทันทีหลังบันทึกสำเร็จ (ไม่ต้องกดปุ่มแยก) — ปุ่มดาวน์โหลด/พิมพ์จะโผล่มาก็ต่อเมื่อสร้างเสร็จจริงเท่านั้น
       btnSave.textContent = 'กำลังสร้าง PDF...';
@@ -1243,7 +903,7 @@ async function saveOrder() {
     showStatus('เชื่อมต่อ Google Sheet ไม่ได้: ' + err, 'err');
   } finally {
     btnSave.disabled = false;
-    btnSave.innerHTML = 'Save<span class="th">บันทึกข้อมูล</span>';
+    btnSave.textContent = 'บันทึกข้อมูล';
   }
 }
 
@@ -1322,30 +982,6 @@ function statusBadgeClass(status) {
   return 'pending';
 }
 
-// นับจำนวนวันคงเหลือถึงวันนัดรับ/ส่งงาน — งานที่เสร็จแล้ว/ยกเลิกไม่ต้องนับต่อ (โชว์ "-" แทน)
-function countdownHtml_(order) {
-  if (order.status === 'เสร็จแล้ว' || order.status === 'ยกเลิก') {
-    return '<span class="muted" style="font-size:11.5px;">-</span>';
-  }
-  const appt = parseDateOnly_(toDateInputValue_(order.appointmentDate));
-  if (!appt) return '<span class="muted" style="font-size:11.5px;">-</span>';
-  const today = new Date();
-  const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  const diffDays = Math.round((appt - todayOnly) / 86400000);
-
-  // แดง = เหลืออีก 7 วันหรือน้อยกว่า (รวมวันนี้และเลยกำหนดไปแล้วด้วย) เพื่อให้เห็นเด่นชัดว่าใกล้ครบกำหนด
-  const color = diffDays <= 7 ? '#b23a3a' : 'var(--text)';
-  let text;
-  if (diffDays > 0) {
-    text = `${diffDays} day(s) left`;
-  } else if (diffDays === 0) {
-    text = 'Due today';
-  } else {
-    text = `${Math.abs(diffDays)} day(s) overdue`;
-  }
-  return `<span style="color:${color}; font-weight:600; font-size:11.5px;">${text}</span>`;
-}
-
 function renderListTable() {
   const q = document.getElementById('listSearch').value.trim().toLowerCase();
   const statusFilter = document.getElementById('listStatusFilter').value;
@@ -1362,80 +998,34 @@ function renderListTable() {
   document.getElementById('listEmptyMsg').textContent = 'ไม่พบข้อมูลออเดอร์';
 
   const statusOptions = ['รอดำเนินการ', 'กำลังทำ', 'เสร็จแล้ว', 'ยกเลิก'];
-  const STATUS_LABELS_ = { 'รอดำเนินการ': 'Pending', 'กำลังทำ': 'In Progress', 'เสร็จแล้ว': 'Completed', 'ยกเลิก': 'Cancelled' };
 
   filtered.forEach(o => {
     const tr = document.createElement('tr');
-    const isSelected = selectedOrderIds.has(o.orderId);
-    if (isSelected) tr.classList.add('row-selected');
     const updated = o.updatedAt ? new Date(o.updatedAt).toLocaleString('th-TH') : '-';
-    // ตัวเลือกในลิสต์ (เวลากดเปิด dropdown) ให้เป็นสองภาษา แต่ตอนปิด/แสดงผลปกติจะโชว์แค่ภาษาอังกฤษผ่าน badge ที่วางทับ select ไว้ (ดูด้านล่าง)
     const optionsHtml = statusOptions.map(s =>
-      `<option value="${escapeHtml(s)}" ${s === o.status ? 'selected' : ''}>${escapeHtml(STATUS_LABELS_[s] || s)} - ${escapeHtml(s)}</option>`
+      `<option value="${escapeHtml(s)}" ${s === o.status ? 'selected' : ''}>${escapeHtml(s)}</option>`
     ).join('');
     const thumbUrl = (o.items && o.items[0] && o.items[0].imageUrl) ? driveThumbnailUrl_(o.items[0].imageUrl, 100) : '';
     const thumbHtml = thumbUrl
       ? `<img src="${escapeHtml(thumbUrl)}" style="width:36px; height:36px; object-fit:cover; border-radius:6px; display:block;" onerror="this.outerHTML='<div style=&quot;width:36px;height:36px;border-radius:6px;background:#eee7de;&quot;></div>'">`
       : `<div style="width:36px; height:36px; border-radius:6px; background:#eee7de;"></div>`;
     tr.innerHTML = `
-      <td><input type="checkbox" class="row-check" data-id="${o.orderId}" ${isSelected ? 'checked' : ''}></td>
+      <td><input type="checkbox" class="row-check" data-id="${o.orderId}"></td>
       <td>${thumbHtml}</td>
       <td>${o.orderId}</td>
       <td>${o.customerName}</td>
       <td>${formatDateShort_(o.appointmentDate)}</td>
-      <td class="status-cell">
-        <span class="badge ${statusBadgeClass(o.status)}" data-status-badge="${o.orderId}">${escapeHtml(STATUS_LABELS_[o.status] || o.status)}</span>
-        <select class="status-select-overlay" data-status-id="${o.orderId}">${optionsHtml}</select>
-      </td>
-      <td>${countdownHtml_(o)}</td>
+      <td><select class="badge ${statusBadgeClass(o.status)}" data-status-id="${o.orderId}">${optionsHtml}</select></td>
       <td>${o.items.length}</td>
-      <td>
-        <button class="btn-ghost btn-sm btn-icon" data-assign="${o.orderId}" title="มอบหมาย Production/Reviewer">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-            <path d="M21 21v-2a4 4 0 0 0-3-3.87"></path>
-          </svg>
-        </button>
-      </td>
       <td>${updated}</td>
       <td>
-        <button class="btn-ghost btn-sm" data-edit="${o.orderId}">Edit</button>
-        <button class="btn-ghost btn-sm" data-del="${o.orderId}" style="color:#b23a3a;">Delete</button>
-      </td>
-      <td>
-        <button class="btn-ghost btn-sm btn-icon" data-print="${o.orderId}" title="พิมพ์เอกสาร">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-            <rect x="6" y="14" width="12" height="8"></rect>
-          </svg>
-        </button>
+        <button class="btn-ghost btn-sm" data-edit="${o.orderId}">แก้ไข</button>
+        <button class="btn-ghost btn-sm" data-del="${o.orderId}" style="color:#b23a3a;">ลบ</button>
       </td>
     `;
     tbody.appendChild(tr);
   });
 
-  tbody.querySelectorAll('.row-check').forEach(cb => {
-    cb.addEventListener('change', () => {
-      const id = cb.dataset.id;
-      if (cb.checked) selectedOrderIds.add(id); else selectedOrderIds.delete(id);
-      cb.closest('tr').classList.toggle('row-selected', cb.checked);
-    });
-  });
-  tbody.querySelectorAll('[data-print]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const order = allOrders.find(o => o.orderId === btn.dataset.print);
-      if (order) printOrderFromList_(order);
-    });
-  });
-  tbody.querySelectorAll('[data-assign]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const order = allOrders.find(o => o.orderId === btn.dataset.assign);
-      if (order) openAssignModal_(order);
-    });
-  });
   tbody.querySelectorAll('[data-edit]').forEach(btn => {
     btn.addEventListener('click', () => {
       const order = allOrders.find(o => o.orderId === btn.dataset.edit);
@@ -1455,16 +1045,11 @@ function renderListTable() {
     sel.addEventListener('change', async () => {
       const orderId = sel.dataset.statusId;
       const newStatus = sel.value;
-      const badgeEl = tbody.querySelector(`[data-status-badge="${orderId}"]`);
       const order = allOrders.find(o => o.orderId === orderId);
       const prevStatus = order ? order.status : null;
 
       // อัปเดตหน้าจอ + สถานะในเครื่องทันที (optimistic) ไม่ต้องรอ server ตอบกลับก่อนถึงจะเปลี่ยนสี/ค่า
-      // badge ที่โชว์อยู่ (ตอนปิด dropdown) ให้เป็นภาษาอังกฤษล้วน ส่วนตัวเลือกใน dropdown ยังเป็นสองภาษาเหมือนเดิม
-      if (badgeEl) {
-        badgeEl.className = 'badge ' + statusBadgeClass(newStatus);
-        badgeEl.textContent = STATUS_LABELS_[newStatus] || newStatus;
-      }
+      sel.className = 'badge ' + statusBadgeClass(newStatus);
       if (order) order.status = newStatus;
       if (currentOrder && currentOrder.orderId === orderId) {
         currentOrder.status = newStatus;
@@ -1477,199 +1062,12 @@ function renderListTable() {
       } catch (err) {
         // ถ้าบันทึกจริงไม่สำเร็จ ค่อยย้อนกลับค่าเดิม
         sel.value = prevStatus;
-        if (badgeEl) {
-          badgeEl.className = 'badge ' + statusBadgeClass(prevStatus);
-          badgeEl.textContent = STATUS_LABELS_[prevStatus] || prevStatus;
-        }
+        sel.className = 'badge ' + statusBadgeClass(prevStatus);
         if (order) order.status = prevStatus;
         showStatus('เปลี่ยนสถานะไม่สำเร็จ (ย้อนกลับค่าเดิมแล้ว): ' + err, 'err');
       }
     });
   });
-}
-
-/* ========================= มอบหมาย Production staff / Reviewer (จากหน้าคิวงาน) ========================= */
-// ทำงานแยกจากฟอร์มออเดอร์เต็ม — แก้ทีละรายการแล้วบันทึกทันทีผ่าน action 'updateItemAssignment'
-// ไม่แตะข้อมูลอื่นของออเดอร์เลย (ไม่ต้องเปิดฟอร์มทั้งใบ)
-let assignModalOrderId_ = null;
-let assignModalItems_ = [];
-
-function openAssignModal_(order) {
-  assignModalOrderId_ = order.orderId;
-  assignModalItems_ = (order.items || []).map((it, i) => ({
-    itemIndex: it.itemIndex || (i + 1),
-    description: it.description || '',
-    imageUrl: it.imageUrl || '',
-    productionStaff: it.productionStaff || '',
-    reviewerName: it.reviewerName || '',
-    reviewerSignatureUrl: it.reviewerSignatureUrl || '',
-    reviewerSignatureData: '',
-    reviewedAt: it.reviewedAt || '',
-    clearedSignature_: false
-  }));
-  document.getElementById('assignOrderIdLabel').textContent = order.orderId;
-  renderAssignItems_();
-  document.getElementById('assignOverlay').style.display = 'flex';
-}
-
-function closeAssignModal_() {
-  document.getElementById('assignOverlay').style.display = 'none';
-  assignModalOrderId_ = null;
-  assignModalItems_ = [];
-}
-
-function renderAssignItems_() {
-  const container = document.getElementById('assignItemsList');
-  container.innerHTML = assignModalItems_.map((item, idx) => {
-    const sigSrc = item.reviewerSignatureData || (item.reviewerSignatureUrl ? driveThumbnailUrl_(item.reviewerSignatureUrl, 150) : '');
-    const itemThumbSrc = item.imageUrl ? driveThumbnailUrl_(item.imageUrl, 200) : '';
-    const itemThumbHtml = itemThumbSrc
-      ? `<img src="${escapeHtml(itemThumbSrc)}" style="width:56px; height:56px; object-fit:cover; border-radius:7px; flex:0 0 auto;" onerror="this.style.display='none';">`
-      : `<div style="width:56px; height:56px; border-radius:7px; background:#eee7de; flex:0 0 auto;"></div>`;
-    return `
-      <div class="item-card" style="margin-bottom:10px;">
-        <div class="item-head">
-          <div style="display:flex; align-items:center; gap:10px;">
-            ${itemThumbHtml}
-            <b>Item - รายการที่ ${idx + 1}</b>
-          </div>
-          <span class="muted" style="font-size:12px; max-width:45%; text-align:right;">${escapeHtml(item.description || '-')}</span>
-        </div>
-        <div class="row">
-          <div class="field small">
-            <label>Production Staff - ผู้ดูแลการผลิต</label>
-            <input type="text" data-assign-field="productionStaff" data-assign-idx="${idx}" value="${escapeHtml(item.productionStaff)}" list="staffDatalist" autocomplete="off">
-          </div>
-          <div class="field" style="flex:2 1 220px;">
-            <label>Reviewer - ผู้ตรวจสอบ/อนุมัติ</label>
-            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-              <input type="text" data-assign-field="reviewerName" data-assign-idx="${idx}" value="${escapeHtml(item.reviewerName)}" list="staffDatalist" autocomplete="off" style="flex:1 1 140px;">
-              ${sigSrc ? `
-                <img src="${escapeHtml(sigSrc)}" style="height:32px; max-width:100px; object-fit:contain; border:1px solid var(--border); border-radius:5px; background:#fff; padding:2px;" onerror="this.style.display='none';">
-                <button type="button" class="btn-outline btn-sm btn-2line" data-assign-clear-sig="${idx}">Clear<span class="th">ล้าง</span></button>
-              ` : `
-                <button type="button" class="btn-outline btn-sm btn-2line" data-assign-sign="${idx}">Sign<span class="th">เซ็นอนุมัติ</span></button>
-              `}
-            </div>
-            ${item.reviewedAt ? `<div class="muted" style="margin-top:4px; font-size:11.5px;">Signed - เซ็นแล้ว: ${escapeHtml(formatSignedDateTime_(item.reviewedAt))}</div>` : ''}
-          </div>
-        </div>
-        <div style="display:flex; justify-content:flex-end; margin-top:6px;">
-          <button type="button" class="btn-dark btn-sm btn-2line" data-assign-save="${idx}">Save<span class="th">บันทึก</span></button>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  container.querySelectorAll('[data-assign-field]').forEach(el => {
-    el.addEventListener('input', () => {
-      assignModalItems_[Number(el.dataset.assignIdx)][el.dataset.assignField] = el.value;
-    });
-  });
-  container.querySelectorAll('[data-assign-sign]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = Number(btn.dataset.assignSign);
-      openSignatureModal_((dataUrl, ts) => {
-        assignModalItems_[idx].reviewerSignatureData = dataUrl;
-        assignModalItems_[idx].reviewerSignatureUrl = '';
-        assignModalItems_[idx].reviewedAt = ts;
-        assignModalItems_[idx].clearedSignature_ = false;
-        renderAssignItems_();
-      });
-    });
-  });
-  container.querySelectorAll('[data-assign-clear-sig]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = Number(btn.dataset.assignClearSig);
-      assignModalItems_[idx].reviewerSignatureData = '';
-      assignModalItems_[idx].reviewerSignatureUrl = '';
-      assignModalItems_[idx].reviewedAt = '';
-      assignModalItems_[idx].clearedSignature_ = true;
-      renderAssignItems_();
-    });
-  });
-  container.querySelectorAll('[data-assign-save]').forEach(btn => {
-    btn.addEventListener('click', () => saveAssignItem_(Number(btn.dataset.assignSave), btn));
-  });
-}
-
-async function saveAssignItem_(idx, btnEl) {
-  const item = assignModalItems_[idx];
-  const originalHtml = btnEl.innerHTML;
-  btnEl.disabled = true;
-  btnEl.textContent = 'Saving...';
-  try {
-    const payload = {
-      action: 'updateItemAssignment',
-      orderId: assignModalOrderId_,
-      itemIndex: item.itemIndex,
-      productionStaff: item.productionStaff,
-      reviewerName: item.reviewerName
-    };
-    if (item.clearedSignature_) {
-      payload.clearSignature = true;
-    } else if (item.reviewerSignatureData) {
-      payload.reviewerSignatureData = item.reviewerSignatureData;
-      payload.reviewedAt = item.reviewedAt;
-    }
-    const res = await apiPost(payload);
-    if (!res.success) {
-      showStatus('บันทึกไม่สำเร็จ: ' + res.error, 'err');
-      btnEl.disabled = false;
-      btnEl.innerHTML = originalHtml;
-      return;
-    }
-    item.reviewerSignatureUrl = res.item.reviewerSignatureUrl || '';
-    item.reviewerSignatureData = '';
-    item.reviewedAt = res.item.reviewedAt || '';
-    item.clearedSignature_ = false;
-
-    // ซิงก์กลับเข้า allOrders (และฟอร์มออเดอร์ที่เปิดค้างอยู่ ถ้าเป็นออเดอร์เดียวกัน) ทันที ไม่ต้องรอ loadList()
-    const order = allOrders.find(o => o.orderId === assignModalOrderId_);
-    if (order) {
-      const orderItem = (order.items || []).find(it => (it.itemIndex || 0) === item.itemIndex);
-      if (orderItem) {
-        orderItem.productionStaff = item.productionStaff;
-        orderItem.reviewerName = item.reviewerName;
-        orderItem.reviewerSignatureUrl = item.reviewerSignatureUrl;
-        orderItem.reviewedAt = item.reviewedAt;
-      }
-    }
-    if (currentOrder && currentOrder.orderId === assignModalOrderId_) {
-      const curItem = currentOrder.items[item.itemIndex - 1];
-      if (curItem) {
-        curItem.productionStaff = item.productionStaff;
-        curItem.reviewerName = item.reviewerName;
-        curItem.reviewerSignatureUrl = item.reviewerSignatureUrl;
-        curItem.reviewerSignatureData = '';
-        curItem.reviewedAt = item.reviewedAt;
-        renderItems();
-      }
-    }
-    loadStaffList_();
-
-    // สร้าง PDF ของออเดอร์นี้ใหม่ทับของเดิม ให้ข้อมูล Production/Reviewer ที่เพิ่งบันทึกแสดงใน PDF ทันที ไม่ต้องกดสร้างซ้ำเอง
-    btnEl.textContent = 'Generating PDF...';
-    showStatus('บันทึกข้อมูลมอบหมายแล้ว — กำลังสร้าง PDF ใหม่...', 'loading');
-    try {
-      const pdfRes = await apiPost({ action: 'generatePdf', orderId: assignModalOrderId_ });
-      if (pdfRes.success) {
-        if (order) order.pdfUrl = pdfRes.pdfUrl;
-        if (currentOrder && currentOrder.orderId === assignModalOrderId_) currentOrder.pdfUrl = pdfRes.pdfUrl;
-        showStatus('บันทึกข้อมูลมอบหมายและสร้าง PDF ใหม่เรียบร้อย', 'ok');
-      } else {
-        showStatus('บันทึกข้อมูลมอบหมายแล้ว แต่สร้าง PDF ใหม่ไม่สำเร็จ: ' + pdfRes.error, 'err');
-      }
-    } catch (pdfErr) {
-      showStatus('บันทึกข้อมูลมอบหมายแล้ว แต่สร้าง PDF ใหม่ไม่สำเร็จ (เชื่อมต่อ/ทำงานผิดพลาด): ' + pdfErr, 'err');
-    }
-
-    renderAssignItems_();
-  } catch (err) {
-    showStatus('เชื่อมต่อไม่ได้: ' + err, 'err');
-    btnEl.disabled = false;
-    btnEl.innerHTML = originalHtml;
-  }
 }
 
 /* ========================= PDF (สร้างฝั่งเซิร์ฟเวอร์ บันทึกลง Google Drive) ========================= */
@@ -1737,14 +1135,14 @@ function closePdfModal_() {
 }
 
 // สร้าง PDF ใหม่จริงๆ จาก template (เรียก generatePdf เสมอ) — ใช้ตอนยังไม่เคยมี PDF เท่านั้น
-async function regeneratePdf_(includeContactInfo) {
+async function regeneratePdf_() {
   if (!currentOrder || !currentOrder.orderId) {
     showStatus('กรุณาบันทึกออเดอร์ก่อนดูตัวอย่าง', 'err');
     return;
   }
   openPdfModal_(`ตัวอย่าง PDF — ${currentOrder.orderId}`);
   try {
-    const res = await apiPost({ action: 'generatePdf', orderId: currentOrder.orderId, includeContactInfo: includeContactInfo !== false });
+    const res = await apiPost({ action: 'generatePdf', orderId: currentOrder.orderId });
     console.log('[generatePdf response]', res);
     if (res.success) {
       currentOrder.pdfUrl = res.pdfUrl;
@@ -1774,71 +1172,16 @@ async function previewPdf() {
     showStatus('เปิด PDF ที่มีอยู่แล้ว', 'ok');
     return;
   }
-  // ยังไม่เคยมี PDF เลย ต้องสร้างใหม่ — พิมพ์เดี่ยวจะเก็บข้อมูลครบทุกอย่างเสมอ ไม่ถามตัวเลือกซ่อนข้อมูล (ตัวเลือกนั้นมีแค่ตอน "พิมพ์ที่เลือก" หลายออเดอร์เท่านั้น)
   await regeneratePdf_();
 }
 
-// กดปุ่ม 🖨️ ที่แถวในหน้าคิวงาน — เปิด PDF ของออเดอร์นั้นโดยตรง ไม่ต้องโหลดเข้าฟอร์มก่อน
-// ถ้ามี PDF ที่สร้างไว้แล้วเปิดเลย ถ้ายังไม่มีค่อยสร้างใหม่ (ใช้หลักการเดียวกับ previewPdf)
-async function printOrderFromList_(order) {
-  if (order.pdfUrl) {
-    openPdfModal_(`ตัวอย่าง PDF — ${order.orderId}`);
-    showPdfInModal_(order.pdfUrl);
-    showStatus('เปิด PDF ที่มีอยู่แล้ว', 'ok');
-    return;
-  }
-  // ยังไม่เคยมี PDF เลย ต้องสร้างใหม่ — เก็บข้อมูลครบทุกอย่างเสมอ ไม่ถามตัวเลือกซ่อนข้อมูล
-  await generatePdfForOrderRow_(order);
-}
-
-async function generatePdfForOrderRow_(order, includeContactInfo) {
-  openPdfModal_(`ตัวอย่าง PDF — ${order.orderId}`);
-  try {
-    const res = await apiPost({ action: 'generatePdf', orderId: order.orderId, includeContactInfo: includeContactInfo !== false });
-    if (res.success) {
-      order.pdfUrl = res.pdfUrl; // เก็บลง allOrders ไว้ด้วย เผื่อกดซ้ำจะได้ไม่ต้องสร้างใหม่อีก
-      if (currentOrder && currentOrder.orderId === order.orderId) currentOrder.pdfUrl = res.pdfUrl;
-      showPdfInModal_(res.pdfUrl);
-      showStatus('สร้าง PDF สำเร็จ', 'ok');
-    } else {
-      showPdfModalError_('สร้าง PDF ไม่สำเร็จ: ' + res.error);
-      showStatus('สร้าง PDF ไม่สำเร็จ: ' + res.error, 'err');
-    }
-  } catch (err) {
-    showPdfModalError_('สร้าง PDF ไม่สำเร็จ: ' + err);
-    showStatus('สร้าง PDF ไม่สำเร็จ: ' + err, 'err');
-  }
-}
-
-// เปิด/ปิด modal ให้เลือกว่าจะแสดงข้อมูลติดต่อลูกค้า (Company/Contact Person/...) ในเอกสารรวมหรือไม่ ก่อนกด "พิมพ์ที่เลือก" จริง
-// modal เดียวกันนี้ใช้ร่วมกันทั้งตอน "พิมพ์ที่เลือก" (หลายออเดอร์) และตอนพิมพ์เดี่ยวๆ (ที่ยังไม่เคยสร้าง PDF มาก่อน)
-// เก็บ callback ไว้ใน pdfOptionsConfirmHandler_ แล้วค่อยเรียกตอนกด "สร้าง PDF" ใน modal
-let pdfOptionsConfirmHandler_ = null;
-
-function openPdfOptionsModal_(onConfirm) {
-  document.getElementById('optIncludeContactInfo').checked = true;
-  pdfOptionsConfirmHandler_ = onConfirm;
-  document.getElementById('batchOptionsOverlay').style.display = 'flex';
-}
-
-function openBatchOptionsModal_() {
-  const ids = Array.from(selectedOrderIds);
-  if (ids.length === 0) { showStatus('กรุณาเลือกอย่างน้อย 1 รายการก่อนพิมพ์', 'err'); return; }
-  openPdfOptionsModal_(includeContactInfo => printSelectedPdf(includeContactInfo));
-}
-
-function closeBatchOptionsModal_() {
-  document.getElementById('batchOptionsOverlay').style.display = 'none';
-  pdfOptionsConfirmHandler_ = null;
-}
-
-async function printSelectedPdf(includeContactInfo) {
-  const ids = Array.from(selectedOrderIds);
+async function printSelectedPdf() {
+  const ids = Array.from(document.querySelectorAll('.row-check:checked')).map(cb => cb.dataset.id);
   if (ids.length === 0) { showStatus('กรุณาเลือกอย่างน้อย 1 รายการก่อนพิมพ์', 'err'); return; }
   // PDF รวมหลายออเดอร์สร้างใหม่ทุกครั้งเสมอ (ไม่มีลิงก์เดิมให้ใช้ซ้ำ เพราะไฟล์รวมนี้ไม่ได้เก็บถาวร)
   openPdfModal_(`PDF รวม ${ids.length} รายการ`, `กำลังสร้าง PDF รวม ${ids.length} รายการ... (อาจใช้เวลาสักครู่)`);
   try {
-    const res = await apiPost({ action: 'generateBatchPdf', orderIds: ids, includeContactInfo: includeContactInfo !== false });
+    const res = await apiPost({ action: 'generateBatchPdf', orderIds: ids });
     if (res.success) {
       showPdfInModal_(res.pdfUrl);
       showStatus('สร้าง PDF สำเร็จ', 'ok');
